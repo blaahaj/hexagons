@@ -1,0 +1,63 @@
+@font-face {
+	font-family: "Poppins";
+	font-style: normal;
+	font-weight: 100;
+	font-display: block;
+	src: url(/poppins/fonts/poppins-normal-thin.woff2) format("woff2");
+}
+@font-face {
+	font-family: "Poppins";
+	font-style: normal;
+	font-weight: 200;
+	font-display: block;
+	src: url(/poppins/fonts/poppins-normal-extralight.woff2) format("woff2");
+}
+@font-face {
+	font-family: "Poppins";
+	font-style: normal;
+	font-weight: 300;
+	font-display: block;
+	src: url(/poppins/fonts/poppins-normal-light.woff2) format("woff2");
+}
+@font-face {
+	font-family: "Poppins";
+	font-style: normal;
+	font-weight: 400;
+	font-display: block;
+	src: url(/poppins/fonts/poppins-normal-regular.woff2) format("woff2");
+}
+@font-face {
+	font-family: "Poppins";
+	font-style: normal;
+	font-weight: 500;
+	font-display: block;
+	src: url(/poppins/fonts/poppins-normal-medium.woff2) format("woff2");
+}
+@font-face {
+	font-family: "Poppins";
+	font-style: normal;
+	font-weight: 600;
+	font-display: block;
+	src: url(/poppins/fonts/poppins-normal-semibold.woff2) format("woff2");
+}
+@font-face {
+	font-family: "Poppins";
+	font-style: normal;
+	font-weight: 700;
+	font-display: block;
+	src: url(/poppins/fonts/poppins-normal-bold.woff2) format("woff2");
+}
+@font-face {
+	font-family: "Poppins";
+	font-style: normal;
+	font-weight: 800;
+	font-display: block;
+	src: url(/poppins/fonts/poppins-normal-extrabold.woff2) format("woff2");
+}
+@font-face {
+	font-family: "Poppins";
+	font-style: normal;
+	font-weight: 900;
+	font-display: block;
+	src: url(/poppins/fonts/poppins-normal-black.woff2) format("woff2");
+}

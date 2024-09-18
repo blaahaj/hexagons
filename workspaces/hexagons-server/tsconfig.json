@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "es6"
+    ],
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true
+  },
+  "files": [
+    "src/index.cts"
+  ]
+}
