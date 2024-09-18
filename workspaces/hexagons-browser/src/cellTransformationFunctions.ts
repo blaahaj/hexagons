@@ -1,5 +1,5 @@
 import { Cell } from "./distractions";
-import { groups } from "./hexagonsData";
+// import { groups } from "./hexagonsData";
 import {
   randomColorPair,
   randomElementFrom,
@@ -111,38 +111,36 @@ const transformNRandomSymbols: F = () => {
 
 const transformSymbolsFromWord: F = () => {
   const word = randomElementFrom([
-    "HEDIA",
-    "HeDiA",
+    "BLÅHAJ",
+    "BLåHAj",
+    "BLAAHAJ",
+    "BLaAHAj",
     "HEXAGON",
     "HeXAgON",
-    "BESTAGONS",
-    "BeStAgONS",
-    "DISCO",
-    "DISCO🪩",
   ]);
   const symbols = word.split(/([A-Z][a-z]?)/g).filter((t) => t !== "");
   return (item: Cell) =>
     (item.hexagon.parts.middle.text = randomElementFrom(symbols));
 };
 
-const transformBestagons: F = () => {
-  const bestagons = groups
-    .map((group) =>
-      group.hexagons!.map((hexagon) => ({
-        code: hexagon.code,
-        color: group.color,
-        textColor: group.textColor,
-      }))
-    )
-    .flat();
+// const transformBestagons: F = () => {
+//   const bestagons = groups
+//     .map((group) =>
+//       group.hexagons!.map((hexagon) => ({
+//         code: hexagon.code,
+//         color: group.color,
+//         textColor: group.textColor,
+//       }))
+//     )
+//     .flat();
 
-  return (item) => {
-    const bestagon = randomElementFrom(bestagons);
-    item.hexagon.parts.middle.text = bestagon.code;
-    item.hexagon.color = bestagon.color;
-    item.hexagon.parts.middle.color = bestagon.textColor;
-  };
-};
+//   return (item) => {
+//     const bestagon = randomElementFrom(bestagons);
+//     item.hexagon.parts.middle.text = bestagon.code;
+//     item.hexagon.color = bestagon.color;
+//     item.hexagon.parts.middle.color = bestagon.textColor;
+//   };
+// };
 
 const compound =
   (...transformations: F[]): F =>
@@ -169,9 +167,9 @@ export default [
   transformIndependentRandomSymbols,
   transformNRandomSymbols,
   transformSymbolsFromWord,
-  transformBestagons,
+  // transformBestagons,
   compound(transformMakeSingleRandomColor, transformSingleRotateAll),
-  compound(transformBestagons, transformIndependentMakeWonky),
+  compound(transformSymbolsFromWord, transformIndependentMakeWonky),
   compound(transformSymbolsFromWord, transformSingleRotateX),
   compound(
     transformSymbolsFromWord,

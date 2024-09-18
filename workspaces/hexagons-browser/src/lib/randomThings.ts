@@ -7,8 +7,7 @@ export const randomSymbol = (() => {
     const n = Math.random();
     if (n > 0.98) return "🪩";
     if (n > 0.96) return "⭐️";
-    if (n > 0.94) return "🐈";
-    if (n > 0.92) return "🐝";
+    if (n > 0.94) return "🐝";
     return (
       randomLetterFrom(alphabet).toUpperCase() +
       randomLetterFrom(alphabet + "  ").trim()
