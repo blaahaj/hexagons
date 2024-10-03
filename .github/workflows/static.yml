@@ -35,6 +35,8 @@ jobs:
       #   uses: actions/configure-pages@v5
       - name: Setup node
         uses: actions/setup-node@v4
+        with:
+          node-version-file: .tool-versions
       - name: Prepare bundle
         run: |
           yarn
