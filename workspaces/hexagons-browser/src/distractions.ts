@@ -69,7 +69,9 @@ const check = () => {
       else document.exitFullscreen();
     }
 
-    if (event.key === "n") iterate();
+    if (event.key === "n" && !timeout) {
+      iterate();
+    }
 
     if (event.key === "s" && timeout) {
       clearTimeout(timeout);
