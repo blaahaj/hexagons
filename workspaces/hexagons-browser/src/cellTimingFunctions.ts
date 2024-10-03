@@ -1,7 +1,9 @@
 import { Cell } from "./distractions";
 import { randomElementFrom } from "./lib/randomThings";
 
-export type CellTimingFunction = () => (cell: Cell) => number;
+export type CellTimingFunction = (
+  cells: ReadonlyArray<Cell>
+) => (cell: Cell) => number;
 
 export const timingZero: CellTimingFunction = () => () => 0;
 

@@ -7,7 +7,9 @@ import {
 } from "./lib/randomThings";
 import { schemes } from "./colorSchemes";
 
-export type CellTransformationFunction = () => (cell: Cell) => void;
+export type CellTransformationFunction = (
+  cells: ReadonlyArray<Cell>
+) => (cell: Cell) => void;
 type F = CellTransformationFunction;
 
 const transformMakeSingleRandomColor: F = () => {
@@ -153,8 +155,8 @@ const transformSymbolsFromWord: F = () => {
 
 const compound =
   (...transformations: F[]): F =>
-  () => {
-    const fns = transformations.map((t) => t());
+  (cells: ReadonlyArray<Cell>) => {
+    const fns = transformations.map((t) => t(cells));
     return (item) => {
       fns.forEach((fn) => fn(item));
     };

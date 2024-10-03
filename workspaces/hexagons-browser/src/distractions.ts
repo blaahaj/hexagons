@@ -46,10 +46,10 @@ const check = () => {
   }
 
   const iterate = () => {
-    const timingFunction = randomElementFrom(cellTimingFunctions)();
+    const timingFunction = randomElementFrom(cellTimingFunctions)(cells);
     const transformationFunction = randomElementFrom(
       cellTransformationFunctions
-    )();
+    )(cells);
     const itemsWithDelays = normaliseRange(
       cells.map((item) => [item, timingFunction(item)]),
       100,
