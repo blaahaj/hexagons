@@ -1,3 +1,4 @@
+/workspaces/*/dist/
 /workspaces/*/es/
 /workspaces/*/lib/
 node_modules/
