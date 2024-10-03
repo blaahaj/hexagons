@@ -39,9 +39,37 @@ const transformNRandomColors: F = () => {
 
 const transformToRandomColorScheme: F = () => {
   const scheme = randomElementFrom(Object.values(schemes));
+
+  const { out: entries, next: totalWeight } = Object.entries(
+    scheme.weightedColors
+  ).reduce(
+    (prev, [color, weight]) => ({
+      out: [
+        ...prev.out,
+        {
+          color,
+          weight,
+          start: prev.next,
+          end: prev.next + weight,
+        },
+      ],
+      next: prev.next + weight,
+    }),
+    {
+      out: [] as {
+        color: string;
+        weight: number;
+        start: number;
+        end: number;
+      }[],
+      next: 0,
+    }
+  );
+
   return (item) => {
-    const color = randomElementFrom(scheme);
-    item.hexagon.color = color;
+    const n = Math.random() * totalWeight;
+    const entry = entries.filter((e) => n >= e.start && n < e.end)[0];
+    item.hexagon.color = entry.color;
   };
 };
 
