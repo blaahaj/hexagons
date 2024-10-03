@@ -31,12 +31,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        
       # - name: Setup Pages
       #   uses: actions/configure-pages@v5
+      - name: Setup node
+        uses: actions/setup-node@v4
       - name: Prepare bundle
-        run: |
-          echo "// TODO" > ./workspaces/hexagons-server/public/js/distractions.bundle.js      
+        run: yarn run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
