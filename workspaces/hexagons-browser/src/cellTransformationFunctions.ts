@@ -5,6 +5,7 @@ import {
   randomElementFrom,
   randomSymbol,
 } from "./lib/randomThings";
+import { schemes } from "./colorSchemes";
 
 export type CellTransformationFunction = () => (cell: Cell) => void;
 type F = CellTransformationFunction;
@@ -31,6 +32,14 @@ const transformNRandomColors: F = () => {
     const colorPair = randomElementFrom(colorPairs);
     item.hexagon.color = colorPair.bg;
     item.hexagon.parts.middle.color = colorPair.fg;
+  };
+};
+
+const transformToRandomColorScheme: F = () => {
+  const scheme = randomElementFrom(Object.values(schemes));
+  return (item) => {
+    const color = randomElementFrom(scheme);
+    item.hexagon.color = color;
   };
 };
 
@@ -155,6 +164,7 @@ export default [
   transformMakeSingleRandomColor,
   transformIndependentRandomColors,
   transformNRandomColors,
+  transformToRandomColorScheme,
   transformSingleRotateAll,
   transformSingleRotateAll,
   transformSingleRotateAll,
