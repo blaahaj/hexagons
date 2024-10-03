@@ -36,7 +36,9 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
       - name: Prepare bundle
-        run: yarn run build
+        run: |
+          yarn
+          yarn run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
