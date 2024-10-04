@@ -51,7 +51,7 @@ const check = () => {
       cellTransformationFunctions
     )(cells);
     const itemsWithDelays = normaliseRange(
-      cells.map((item) => [item, timingFunction(item)]),
+      cells.map(item => [item, timingFunction(item)]),
       100,
       1500
     );
@@ -62,7 +62,7 @@ const check = () => {
 
   let timeout: NodeJS.Timeout | undefined = setInterval(iterate, 6000);
 
-  document.addEventListener("keydown", (event) => {
+  document.addEventListener("keydown", event => {
     if (event.key === "f") {
       if (document.fullscreenElement === null)
         document.body.requestFullscreen();

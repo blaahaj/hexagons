@@ -15,6 +15,6 @@ export default <T>(
   if (inputRange < 0.1) return items;
   const scale = outputRange / inputRange;
   return items.map(
-    (item) => [item[0], outputMin + scale * (item[1] - inputMin)] as const
+    item => [item[0], outputMin + scale * (item[1] - inputMin)] as const
   );
 };

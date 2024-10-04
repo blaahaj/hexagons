@@ -8,6 +8,8 @@
   "dependencies": {},
   "scripts": {
     "build": "yarn workspaces run build",
+    "prettier:check": "prettier --check .",
+    "prettier:write": "prettier --write .",
     "server": "yarn workspace hexagons-server run:es"
   },
   "workspaces": [

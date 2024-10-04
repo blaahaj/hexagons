@@ -1,65 +1,81 @@
-.hexagon-grid--xs{--hex-short-radius: 1.5em}
-.hexagon-grid--sm{--hex-short-radius: 2.4em}
-.hexagon-grid--md{--hex-short-radius: 3.3em}
-.hexagon-grid--lg{--hex-short-radius: 3.9em}
-.hexagon-grid--xl{--hex-short-radius: 5.2em}
+.hexagon-grid--xs {
+  --hex-short-radius: 1.5em;
+}
+.hexagon-grid--sm {
+  --hex-short-radius: 2.4em;
+}
+.hexagon-grid--md {
+  --hex-short-radius: 3.3em;
+}
+.hexagon-grid--lg {
+  --hex-short-radius: 3.9em;
+}
+.hexagon-grid--xl {
+  --hex-short-radius: 5.2em;
+}
 
 .hexagon-grid {
-    --hexagon-spacing: 1.04;
-    --hex-long-radius: calc(var(--hex-short-radius)/sin(60deg));
-    padding-right: calc(var(--hex-short-radius)*.5);
-    width: -moz-max-content;
-    width: max-content;
-    overflow: clip;
-    height: -moz-max-content;
-    height: max-content;
+  --hexagon-spacing: 1.04;
+  --hex-long-radius: calc(var(--hex-short-radius) / sin(60deg));
+  padding-right: calc(var(--hex-short-radius) * 0.5);
+  width: -moz-max-content;
+  width: max-content;
+  overflow: clip;
+  height: -moz-max-content;
+  height: max-content;
 }
 
 .hexagon-grid--pad-bottom {
-    padding-bottom: calc(var(--hex-short-radius));
+  padding-bottom: calc(var(--hex-short-radius));
 }
 
 .hexagon-row {
-    line-height: 0;
-    height: calc(var(--hex-short-radius)*2*var(--hexagon-spacing));
+  line-height: 0;
+  height: calc(var(--hex-short-radius) * 2 * var(--hexagon-spacing));
 }
 
 .hexagon-row .hexagon-cell {
-    display: inline-block;
-    width: calc(var(--hex-long-radius)*2);
-    margin-right: calc(var(--hex-long-radius)*(2 - var(--hexagon-spacing)*1.5)*-1);
+  display: inline-block;
+  width: calc(var(--hex-long-radius) * 2);
+  margin-right: calc(
+    var(--hex-long-radius) * (2 - var(--hexagon-spacing) * 1.5) * -1
+  );
 }
 
 .hexagon-grid--classic .hexagon-row .hexagon-cell:nth-child(2n),
 .hexagon-grid--inverted .hexagon-row .hexagon-cell:nth-child(2n - 1) {
-    position: relative;
-    top: calc(var(--hex-short-radius)*var(--hexagon-spacing));
+  position: relative;
+  top: calc(var(--hex-short-radius) * var(--hexagon-spacing));
 }
 
-.hexagon{background: gray;
-    opacity: 1;
-    clip-path: polygon(0 50%,25% 100%,75% 100%,100% 50%,75% 0,25% 0);
-    width: calc(var(--hex-long-radius)*2);
-    height: calc(var(--hex-short-radius)*2)}.hexagon--content{text-align: center;
-    position: relative;
-    color: #fff;
+.hexagon {
+  background: gray;
+  opacity: 1;
+  clip-path: polygon(0 50%, 25% 100%, 75% 100%, 100% 50%, 75% 0, 25% 0);
+  width: calc(var(--hex-long-radius) * 2);
+  height: calc(var(--hex-short-radius) * 2);
+}
+.hexagon--content {
+  text-align: center;
+  position: relative;
+  color: #fff;
 }
 
 .hexagon--content-top {
-    color: #fff9;
-    font-size: calc(var(--hex-short-radius)*.23);
-    top: 18%;
-    font-weight: 400;
+  color: #fff9;
+  font-size: calc(var(--hex-short-radius) * 0.23);
+  top: 18%;
+  font-weight: 400;
 }
 
 .hexagon--content-middle {
-    font-size: calc(var(--hex-short-radius)*.83);
-    top: 50%;
-    font-weight: 700;
+  font-size: calc(var(--hex-short-radius) * 0.83);
+  top: 50%;
+  font-weight: 700;
 }
 
 .hexagon--content-bottom {
-    font-size: calc(var(--hex-short-radius)*.19);
-    top: 82%;
-    font-weight: 400;
+  font-size: calc(var(--hex-short-radius) * 0.19);
+  top: 82%;
+  font-weight: 400;
 }

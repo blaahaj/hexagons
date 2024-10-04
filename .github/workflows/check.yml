@@ -1,0 +1,25 @@
+name: check
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+jobs:
+  node:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .tool-versions
+      - name: yarn install
+        run: yarn
+      - name: prettier
+        run: yarn run prettier:check
+      - name: build
+        run: yarn run build
