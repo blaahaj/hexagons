@@ -37,6 +37,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
+      - name: install pnpm
+        run: npm install -g pnpm@'^8.15.9'
       - name: Prepare bundle
         run: |
           pnpm install

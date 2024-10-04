@@ -29,5 +29,5 @@ Also, you can press:
 ```shell
 pnpm install
 pnpm build
-pnpm run
+pnpm start
 ```
