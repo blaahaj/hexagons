@@ -35,4 +35,4 @@ export const timingClock: CellTimingFunction = () => {
   };
 };
 
-export default [timingZero, timingRandom, timingRadial, timingClock];
+export default [timingZero, timingRandom, timingRadial, timingClock] as const;
