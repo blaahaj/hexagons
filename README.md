@@ -27,7 +27,7 @@ Also, you can press:
 ## Development
 
 ```shell
-yarn
-yarn run build
-yarn run server
+pnpm install
+pnpm build
+pnpm run
 ```

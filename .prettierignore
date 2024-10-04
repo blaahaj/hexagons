@@ -1,2 +1,3 @@
 **/*.bundle.js
 **/public/windfall.*
+pnpm-lock.yaml

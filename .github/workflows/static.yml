@@ -39,8 +39,8 @@ jobs:
           node-version-file: .tool-versions
       - name: Prepare bundle
         run: |
-          yarn
-          yarn run build
+          pnpm install
+          pnpm build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
