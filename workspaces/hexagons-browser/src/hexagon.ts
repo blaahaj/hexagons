@@ -24,7 +24,7 @@ export class HexagonPart {
     this.texts = [makeText(), makeText()];
     this.texts[0].span.style.opacity = "1";
     this.texts[1].span.style.opacity = "0";
-    this.element.append(...this.texts.map((t) => t.span));
+    this.element.append(...this.texts.map(t => t.span));
   }
 
   get text() {

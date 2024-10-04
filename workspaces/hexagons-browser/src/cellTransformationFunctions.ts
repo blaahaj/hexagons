@@ -14,13 +14,13 @@ type F = CellTransformationFunction;
 
 const transformMakeSingleRandomColor: F = () => {
   const colorPair = randomColorPair();
-  return (item) => {
+  return item => {
     item.hexagon.color = colorPair.bg;
     item.hexagon.parts.middle.color = colorPair.fg;
   };
 };
 
-const transformIndependentRandomColors: F = () => (item) => {
+const transformIndependentRandomColors: F = () => item => {
   const colorPair = randomColorPair();
   item.hexagon.color = colorPair.bg;
   item.hexagon.parts.middle.color = colorPair.fg;
@@ -30,7 +30,7 @@ const transformNRandomColors: F = () => {
   const colorPairs = [...Array(1 + Math.floor(Math.random() * 6))].map(() =>
     randomColorPair()
   );
-  return (item) => {
+  return item => {
     const colorPair = randomElementFrom(colorPairs);
     item.hexagon.color = colorPair.bg;
     item.hexagon.parts.middle.color = colorPair.fg;
@@ -66,9 +66,9 @@ const transformToRandomColorScheme: F = () => {
     }
   );
 
-  return (item) => {
+  return item => {
     const n = Math.random() * totalWeight;
-    const entry = entries.filter((e) => n >= e.start && n < e.end)[0];
+    const entry = entries.filter(e => n >= e.start && n < e.end)[0];
     item.hexagon.color = entry.color;
   };
 };
@@ -77,14 +77,14 @@ const transformSingleRotateAll: F = () => {
   const degX = randomElementFrom([0, 180]);
   const degY = randomElementFrom([0, 180]);
   const degZ = randomElementFrom([0, 60, 120, 180, 240]);
-  return (item) => {
+  return item => {
     item.hexagon.rX.style.transform = `rotateX(${degX}deg)`;
     item.hexagon.rY.style.transform = `rotateY(${degY}deg)`;
     item.hexagon.rZ.style.transform = `rotateZ(${degZ}deg)`;
   };
 };
 
-const transformSingleRotateX: F = (cells) => {
+const transformSingleRotateX: F = cells => {
   const seen: Record<string, number> = {};
 
   for (const cell of cells) {
@@ -98,7 +98,7 @@ const transformSingleRotateX: F = (cells) => {
   if (variants.length === 1) {
     // Currently all the same; to avoid a no-op, flip them all
     const degX = 180 - parseInt(variants[0]);
-    return (item) => {
+    return item => {
       item.hexagon.rX.style.transform = `rotateX(${degX}deg)`;
     };
   }
@@ -109,7 +109,7 @@ const transformSingleRotateX: F = (cells) => {
 
   if (Math.random() < 1 / 3) {
     // Flip, retaining wonkiness (if any)
-    return (item) => {
+    return item => {
       const m = item.hexagon.rX.style.transform.match(/rotateX\((.*)deg\)/);
       const existing = parseFloat(m?.[1] ?? "0");
       let degX = 180 - existing;
@@ -117,7 +117,7 @@ const transformSingleRotateX: F = (cells) => {
     };
   } else {
     const degX = randomElementFrom([0, 180]);
-    return (item) => {
+    return item => {
       item.hexagon.rX.style.transform = `rotateX(${degX}deg)`;
     };
   }
@@ -125,14 +125,14 @@ const transformSingleRotateX: F = (cells) => {
 
 const transformSingleRotateY: F = () => {
   const degY = randomElementFrom([0, 180]);
-  return (item) => {
+  return item => {
     item.hexagon.rY.style.transform = `rotateY(${degY}deg)`;
   };
 };
 
 const transformSingleRotateZ: F = () => {
   const degZ = randomElementFrom([0, 60, 120, 180, 240]);
-  return (item) => {
+  return item => {
     item.hexagon.rZ.style.transform = `rotateZ(${degZ}deg)`;
   };
 };
@@ -164,7 +164,7 @@ const transformSingleRandomSymbol: F = () => {
   return (item: Cell) => (item.hexagon.parts.middle.text = symbol);
 };
 
-const transformIndependentRandomSymbols: F = () => (item) =>
+const transformIndependentRandomSymbols: F = () => item =>
   (item.hexagon.parts.middle.text = randomSymbol());
 
 const transformNRandomSymbols: F = () => {
@@ -185,7 +185,7 @@ const transformSymbolsFromWord: F = () => {
     "HEXAGON",
     "HeXAgON",
   ]);
-  const symbols = word.split(/([A-Z][a-z]?)/g).filter((t) => t !== "");
+  const symbols = word.split(/([A-Z][a-z]?)/g).filter(t => t !== "");
   return (item: Cell) =>
     (item.hexagon.parts.middle.text = randomElementFrom(symbols));
 };
@@ -212,9 +212,9 @@ const transformSymbolsFromWord: F = () => {
 const compound =
   (...transformations: F[]): F =>
   (cells: ReadonlyArray<Cell>) => {
-    const fns = transformations.map((t) => t(cells));
-    return (item) => {
-      fns.forEach((fn) => fn(item));
+    const fns = transformations.map(t => t(cells));
+    return item => {
+      fns.forEach(fn => fn(item));
     };
   };
 

@@ -13,7 +13,7 @@ export const timingRadial: CellTimingFunction = () => {
   const originX = Math.random() * document.body.clientWidth;
   const originY = Math.random() * document.body.clientHeight;
   const scale = randomElementFrom([+1, -1]);
-  return (item) =>
+  return item =>
     Math.sqrt(
       (originX - item.cell.offsetLeft) ** 2 +
         (originY - item.cell.offsetTop) ** 2
@@ -25,7 +25,7 @@ export const timingClock: CellTimingFunction = () => {
   const originY = Math.random() * document.body.clientHeight;
   const scale = randomElementFrom([+1, -1]);
   const start = Math.random() * 2;
-  return (item) => {
+  return item => {
     const dx = originX - item.cell.offsetLeft;
     const dy = originY - item.cell.offsetTop;
     let angle = Math.atan2(dy, dx) / Math.PI + 1; // range: (0, 2)
