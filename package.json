@@ -1,18 +1,24 @@
 {
-  "name": "hexagons",
   "version": "0.0.0",
-  "type": "module",
-  "license": "MIT",
-  "private": true,
-  "devDependencies": {},
-  "dependencies": {},
+  "description": "Strangely captivating animated hexagons",
+  "name": "hexagons",
   "scripts": {
-    "build": "yarn workspaces run build",
-    "prettier:check": "prettier --check .",
-    "prettier:write": "prettier --write .",
-    "server": "yarn workspace hexagons-server run:es"
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "prettier:check": "pnpx prettier --check .",
+    "prettier:write": "pnpx prettier --write .",
+    "watch": "webpack --watch"
   },
-  "workspaces": [
-    "workspaces/*"
-  ]
+  "devDependencies": {
+    "@types/node": "^22.7.4",
+    "css-loader": "^7.1.2",
+    "prettier": "^3.3.3",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.6.2",
+    "webpack": "^5.94.0",
+    "webpack-cli": "^5.1.4",
+    "workbox-webpack-plugin": "^7.1.0"
+  }
 }
