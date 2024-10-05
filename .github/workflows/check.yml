@@ -13,15 +13,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .tool-versions
-      - name: install pnpm
-        run: npm install -g pnpm@8.15.9
-      - name: install
+      - name: Install asdf & tools
+        uses: asdf-vm/actions/install@v3
+      - name: Debug
+        run: |
+          which asdf
+          asdf --version
+
+          which node
+          node --version
+
+          which pnpm
+          pnpm --version
+      - name: Install
         run: pnpm install
-      - name: prettier
+      - name: Prettier
         run: pnpm prettier:check
-      - name: build
+      - name: Build
         run: pnpm build
