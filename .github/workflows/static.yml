@@ -33,15 +33,11 @@ jobs:
         uses: actions/checkout@v4
       # - name: Setup Pages
       #   uses: actions/configure-pages@v5
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .tool-versions
-      - name: install pnpm
-        run: npm install -g pnpm@8.15.9
-      - name: install
+      - name: Install asdf & tools
+        uses: asdf-vm/actions/install@v3
+      - name: Install
         run: pnpm install
-      - name: build
+      - name: Build
         run: pnpm build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
