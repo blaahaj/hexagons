@@ -1,4 +1,2 @@
-/workspaces/*/dist/
-/workspaces/*/es/
-/workspaces/*/lib/
 node_modules/
+public/js/main.js

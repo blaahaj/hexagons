@@ -9,7 +9,7 @@ const stylesHandler = "style-loader";
 const config = {
   entry: "./src/distractions.ts",
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "public/js"),
   },
   devServer: {
     open: true,

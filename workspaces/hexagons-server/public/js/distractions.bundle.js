@@ -1,1 +1,0 @@
-../../../hexagons-browser/dist/main.js

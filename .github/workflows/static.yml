@@ -37,14 +37,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
-      - name: Prepare bundle
-        run: |
-          yarn
-          yarn run build
+      - name: install pnpm
+        run: npm install -g pnpm@8.15.9
+      - name: install
+        run: pnpm install
+      - name: build
+        run: pnpm build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./workspaces/hexagons-server/public
+          path: ./public
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
