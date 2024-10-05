@@ -26,8 +26,14 @@ Also, you can press:
 
 ## Development
 
+If you have `asdf` installed, then start with `asdf install`.
+Otherwise, see `.tool-versions` for what you'll need.
+
+Then:
+
 ```shell
-yarn
-yarn run build
-yarn run server
+pnpm install
+pnpm build
+pnpm prettier:check
+open public/index.html
 ```
