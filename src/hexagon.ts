@@ -62,17 +62,14 @@ export class Hexagon {
   public readonly rY: HTMLDivElement;
   public readonly rZ: HTMLDivElement;
 
-  constructor(_size: unknown) {
+  constructor() {
     const parts = (this.parts = {
       top: new HexagonPart("top"),
       middle: new HexagonPart("middle"),
       bottom: new HexagonPart("bottom"),
     });
     const hexagon = document.createElement("div");
-    hexagon.setAttribute(
-      "class",
-      "hexagon transition-[background-color] bg-gray-600 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600 focus-visible:outline-gray-600 dark:focus-visible:outline-gray-500"
-    );
+    hexagon.setAttribute("class", "hexagon");
     hexagon.appendChild(parts.top.element);
     hexagon.appendChild(parts.middle.element);
     hexagon.appendChild(parts.bottom.element);
