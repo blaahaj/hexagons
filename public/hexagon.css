@@ -79,3 +79,37 @@
   top: 82%;
   font-weight: 400;
 }
+
+body {
+  background: #222;
+}
+
+#hexagon-container {
+  position: absolute;
+  left: -5em;
+  top: -5em;
+  overflow: clip;
+}
+
+.hexagon,
+.hexagon--content,
+.rx,
+.ry,
+.rz {
+  transition-property: all;
+  transition-duration: 3s;
+}
+
+.hexagon--content > span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  transition-property: opacity;
+  transition-duration: 3s;
+}
+
+.sm .rx,
+.sm .ry,
+.sm .rz {
+  transform-origin: 60px 52px;
+}
