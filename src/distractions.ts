@@ -24,25 +24,39 @@ const check = () => {
     "hexagon-grid--pad-bottom"
   );
 
+  let rowNumber = 0;
+  let cell: HTMLDivElement;
+
   for (;;) {
-    const rowElement = document.createElement("div");
-    rowElement.className = "hexagon-row";
-    main!.appendChild(rowElement);
+    let columnNumber = 0;
 
     for (;;) {
       const colors = randomColorPair();
       const hexagon = new Hexagon(hexagonSize);
       hexagon.color = colors.bg;
+      hexagon.parts.top.text = "123";
+      hexagon.parts.bottom.text = "demo";
       hexagon.parts.middle.text = randomElementFrom("HEXAGON".split(""));
       hexagon.parts.middle.color = colors.fg;
-      const cell = document.createElement("div");
+      cell = document.createElement("div");
       cell.className = "hexagon-cell";
       cell.appendChild(hexagon.element);
-      rowElement.appendChild(cell);
+
+      cell.setAttribute(
+        "style",
+        `--row: ${rowNumber}; --column: ${columnNumber}; --column-mod-2: ${columnNumber % 2};`
+      );
+
+      main!.appendChild(cell);
+
       cells.push({ hexagon, cell });
+
+      ++columnNumber;
       if (cell.offsetLeft > screen.availWidth) break;
     }
-    if (rowElement.offsetTop > screen.availHeight) break;
+
+    ++rowNumber;
+    if (cell.offsetTop > screen.availHeight) break;
   }
 
   const iterate = () => {
