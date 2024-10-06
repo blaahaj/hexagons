@@ -62,7 +62,7 @@ export class Hexagon {
   public readonly rY: HTMLDivElement;
   public readonly rZ: HTMLDivElement;
 
-  constructor(_size: unknown) {
+  constructor() {
     const parts = (this.parts = {
       top: new HexagonPart("top"),
       middle: new HexagonPart("middle"),

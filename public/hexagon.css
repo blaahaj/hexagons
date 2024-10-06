@@ -1,32 +1,19 @@
-.hexagon-grid--xs {
-  --hex-short-radius: 1.5em;
-}
-.hexagon-grid--sm {
-  --hex-short-radius: 2.4em;
-}
-.hexagon-grid--md {
-  --hex-short-radius: 3.3em;
-}
-.hexagon-grid--lg {
-  --hex-short-radius: 3.9em;
-}
-.hexagon-grid--xl {
-  --hex-short-radius: 5.2em;
+html,
+body {
+  background: #222;
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
-.hexagon-grid {
+#hexagon-container {
   --hexagon-spacing: 1.04;
+  --hex-short-radius: 3.3em;
   --hex-long-radius: calc(var(--hex-short-radius) / sin(60deg));
-  padding-right: calc(var(--hex-short-radius) * 0.5);
-  width: -moz-max-content;
-  width: max-content;
-  overflow: clip;
-  height: -moz-max-content;
-  height: max-content;
-}
-
-.hexagon-grid--pad-bottom {
-  padding-bottom: calc(var(--hex-short-radius));
+  position: absolute;
+  left: -5em;
+  top: -5em;
+  overflow: visible;
 }
 
 .hexagon-cell {
@@ -40,25 +27,6 @@
   );
 }
 
-/* .hexagon-row {
-  line-height: 0;
-  height: calc(var(--hex-short-radius) * 2 * var(--hexagon-spacing));
-}
-
-.hexagon-row .hexagon-cell {
-  display: inline-block;
-  width: calc(var(--hex-long-radius) * 2);
-  margin-right: calc(
-    var(--hex-long-radius) * (2 - var(--hexagon-spacing) * 1.5) * -1
-  );
-}
-
-.hexagon-grid--classic .hexagon-row .hexagon-cell:nth-child(2n),
-.hexagon-grid--inverted .hexagon-row .hexagon-cell:nth-child(2n - 1) {
-  position: relative;
-  top: calc(var(--hex-short-radius) * var(--hexagon-spacing));
-} */
-
 .hexagon {
   background: gray;
   opacity: 1;
@@ -69,40 +37,27 @@
 
 .hexagon--content {
   text-align: center;
+  line-height: 0;
   color: #fff;
+  position: relative;
 }
 
 .hexagon--content-top {
-  /* color: #fff9; */
-  /* font-size: calc(var(--hex-short-radius) * 0.23); */
-  /* top: 18%; */
-  /* font-weight: 400; */
-  height: calc(var(--hex-short-radius) * 2 * 0.25);
+  font-size: calc(var(--hex-short-radius) * 0.23);
+  top: 18%;
+  font-weight: 400;
 }
 
 .hexagon--content-middle {
-  /* font-size: calc(var(--hex-short-radius) * 0.83); */
-  /* top: calc(50% - 2ex); */
-  /* font-weight: 700; */
-  height: calc(var(--hex-short-radius) * 2 * 0.5);
+  font-size: calc(var(--hex-short-radius) * 0.83);
+  top: calc(50%);
+  font-weight: 700;
 }
 
 .hexagon--content-bottom {
-  /* font-size: calc(var(--hex-short-radius) * 0.19); */
-  /* top: 82%; */
-  /* font-weight: 400; */
-  height: calc(var(--hex-short-radius) * 2 * 0.25);
-}
-
-body {
-  background: #222;
-}
-
-#hexagon-container {
-  position: absolute;
-  left: -5em;
-  top: -5em;
-  overflow: visible;
+  font-size: calc(var(--hex-short-radius) * 0.19);
+  top: 82%;
+  font-weight: 400;
 }
 
 .hexagon-cell {
@@ -125,10 +80,4 @@ body {
   width: 100%;
   transition-property: opacity;
   transition-duration: 3s;
-}
-
-.sm .rx,
-.sm .ry,
-.sm .rz {
-  transform-origin: 60px 52px;
 }

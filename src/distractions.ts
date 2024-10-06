@@ -13,16 +13,9 @@ export type Cell = {
 
 const check = () => {
   const main = document.getElementById("hexagon-container");
-  const cells: Cell[] = [];
-  const hexagonSize = "md";
-  const cellSize = "md";
+  if (!main) return;
 
-  main!.classList.add(
-    "hexagon-grid",
-    `hexagon-grid--${cellSize}`,
-    "hexagon-grid--classic",
-    "hexagon-grid--pad-bottom"
-  );
+  const cells: Cell[] = [];
 
   let rowNumber = 0;
   let cell: HTMLDivElement;
@@ -32,10 +25,8 @@ const check = () => {
 
     for (;;) {
       const colors = randomColorPair();
-      const hexagon = new Hexagon(hexagonSize);
+      const hexagon = new Hexagon();
       hexagon.color = colors.bg;
-      hexagon.parts.top.text = "123";
-      hexagon.parts.bottom.text = "demo";
       hexagon.parts.middle.text = randomElementFrom("HEXAGON".split(""));
       hexagon.parts.middle.color = colors.fg;
       cell = document.createElement("div");
@@ -47,7 +38,7 @@ const check = () => {
         `--row: ${rowNumber}; --column: ${columnNumber}; --column-mod-2: ${columnNumber % 2};`
       );
 
-      main!.appendChild(cell);
+      main.appendChild(cell);
 
       cells.push({ hexagon, cell });
 
