@@ -19,11 +19,11 @@ body {
 .hexagon-cell {
   position: absolute;
   top: calc(
-    var(--hexagon-spacing) * (2 * var(--row) + var(--column-mod-2)) *
+    var(--hexagon-spacing) * (2 * var(--cell-y) + var(--cell-x-mod-2)) *
       var(--hex-short-radius)
   );
   left: calc(
-    var(--hexagon-spacing) * var(--column) * var(--hex-long-radius) * 1.5
+    var(--hexagon-spacing) * var(--cell-x) * var(--hex-long-radius) * 1.5
   );
 }
 

@@ -6,10 +6,38 @@ import cellTransformationFunctions, {
   CellTransformationFunction,
 } from "./cellTransformationFunctions";
 
-export type Cell = {
-  hexagon: Hexagon;
-  cell: HTMLDivElement;
+// export type Cell = {
+//   readonly position: CellPosition;
+//   readonly hexagon: Hexagon;
+//   readonly cell: HTMLDivElement;
+// };
+
+export type CellPosition = {
+  readonly x: number;
+  readonly y: number;
 };
+
+export class Cell {
+  constructor(
+    private pos: CellPosition,
+    public readonly hexagon: Hexagon,
+    public readonly cell: HTMLDivElement
+  ) {
+    this.position = pos;
+  }
+
+  get position(): CellPosition {
+    return this.pos;
+  }
+
+  set position(pos: CellPosition) {
+    this.pos = pos;
+    this.cell.setAttribute(
+      "style",
+      `--cell-y: ${pos.y}; --cell-x: ${pos.x}; --cell-x-mod-2: ${pos.x % 2};`
+    );
+  }
+}
 
 const check = () => {
   const main = document.getElementById("hexagon-container");
@@ -17,36 +45,33 @@ const check = () => {
 
   const cells: Cell[] = [];
 
-  let rowNumber = 0;
+  let cellY = 0;
   let cell: HTMLDivElement;
 
   for (;;) {
-    let columnNumber = 0;
+    let cellX = 0;
 
     for (;;) {
       const colors = randomColorPair();
       const hexagon = new Hexagon();
       hexagon.color = colors.bg;
+      // hexagon.parts.top.text = `x=${cellX} y=${cellY}`;
       hexagon.parts.middle.text = randomElementFrom("HEXAGON".split(""));
       hexagon.parts.middle.color = colors.fg;
       cell = document.createElement("div");
       cell.className = "hexagon-cell";
       cell.appendChild(hexagon.element);
 
-      cell.setAttribute(
-        "style",
-        `--row: ${rowNumber}; --column: ${columnNumber}; --column-mod-2: ${columnNumber % 2};`
-      );
+      const cellStruct = new Cell({ x: cellX, y: cellY }, hexagon, cell);
 
       main.appendChild(cell);
+      cells.push(cellStruct);
 
-      cells.push({ hexagon, cell });
-
-      ++columnNumber;
+      ++cellX;
       if (cell.offsetLeft > screen.availWidth) break;
     }
 
-    ++rowNumber;
+    ++cellY;
     if (cell.offsetTop > screen.availHeight) break;
   }
 
