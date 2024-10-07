@@ -47,12 +47,15 @@ const swapNeighbourPairsViaTranslate: CellTransformationFunction = cells => {
     const c0 = copy.splice(n, 1)[0];
 
     const neighbourCells = c0.neighbours();
-    if (!neighbourCells) throw new Error("no array");
 
-    const availableNeighbours = Object.values(neighbourCells).flatMap(c =>
-      c ? [c] : []
-    );
-    if (availableNeighbours.length === 0) continue;
+    const availableNeighbours = Object.values(neighbourCells)
+      .flatMap(c => (c ? [c] : []))
+      .filter(c => copy.includes(c));
+
+    if (availableNeighbours.length === 0) {
+      copy.push(c0);
+      continue;
+    }
 
     const c1 = randomElementFrom(availableNeighbours);
 
