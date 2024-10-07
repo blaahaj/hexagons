@@ -56,7 +56,7 @@ body {
 
 .hexagon--content-middle {
   font-size: calc(var(--hex-short-radius) * 0.83);
-  top: calc(50%);
+  top: 50%;
   font-weight: 700;
 }
 

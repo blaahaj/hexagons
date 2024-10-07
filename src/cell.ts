@@ -30,7 +30,7 @@ export class Cell {
     this.cellArray.add(this);
   }
 
-  public neighbours(): undefined | Neighbours<Cell | undefined> {
+  public neighbours(): Neighbours<Cell | undefined> {
     return this.cellArray.neighboursOf(this.pos);
   }
 }
