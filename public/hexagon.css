@@ -10,6 +10,7 @@ body {
   --hexagon-spacing: 1.04;
   --hex-short-radius: 3.3em;
   --hex-long-radius: calc(var(--hex-short-radius) / sin(60deg));
+  --duration: 3s;
   position: absolute;
   left: -5em;
   top: -5em;
@@ -62,7 +63,7 @@ body {
 
 .hexagon-cell {
   transition-property: top left;
-  transition-duration: 3s;
+  transition-duration: var(--duration);
 }
 
 .hexagon,
@@ -71,7 +72,7 @@ body {
 .ry,
 .rz {
   transition-property: all;
-  transition-duration: 3s;
+  transition-duration: var(--duration);
 }
 
 .hexagon--content > span {
@@ -79,5 +80,5 @@ body {
   left: 0;
   width: 100%;
   transition-property: opacity;
-  transition-duration: 3s;
+  transition-duration: var(--duration);
 }
