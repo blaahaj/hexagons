@@ -1,4 +1,4 @@
-import { Cell } from "./distractions";
+import { Cell } from "./cell";
 
 import * as col from "./cellColourFunctions";
 import * as con from "./cellContentFunctions";

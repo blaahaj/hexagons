@@ -1,4 +1,4 @@
-import { Cell } from "./distractions";
+import { Cell } from "./cell";
 import { randomElementFrom } from "./lib/randomThings";
 
 export type CellTimingFunction = (

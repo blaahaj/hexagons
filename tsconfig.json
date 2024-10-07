@@ -2,6 +2,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
+    "strictNullChecks": true,
     "module": "es6",
     "target": "ES2023",
     "allowJs": true
