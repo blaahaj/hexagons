@@ -47,11 +47,11 @@ const check = () => {
       cells.push(cellStruct);
 
       ++cellX;
-      if (cell.offsetLeft > screen.availWidth) break;
+      if (cell.offsetLeft > cell.parentElement!.clientWidth) break;
     }
 
     ++cellY;
-    if (cell.offsetTop > screen.availHeight) break;
+    if (cell.offsetTop > cell.parentElement!.clientHeight) break;
   }
 
   const iterate = () => {

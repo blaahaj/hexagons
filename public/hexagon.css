@@ -12,9 +12,14 @@ body {
   --hex-long-radius: calc(var(--hex-short-radius) / sin(60deg));
   --duration: 3s;
   position: absolute;
-  left: -5em;
-  top: -5em;
-  overflow: visible;
+
+  /* Ensure we have some hexagons off-screen, so that transitions
+  ** which move hexagons don't visibly hit the edge of the animatable
+  ** space. */
+  left: calc(var(--hex-long-radius) * -5);
+  top: calc(var(--hex-short-radius) * -5);
+  bottom: calc(var(--hex-short-radius) * -5);
+  right: calc(var(--hex-long-radius) * -5);
 }
 
 .hexagon-cell {
