@@ -1,5 +1,5 @@
 import { type CellTransformationFunction } from "./cellTransformationFunctions";
-import { Cell } from "./distractions";
+import { Cell } from "./cell";
 import { randomElementFrom } from "./lib/randomThings";
 
 type F = CellTransformationFunction;

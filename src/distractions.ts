@@ -5,49 +5,53 @@ import cellTimingFunctions, { CellTimingFunction } from "./cellTimingFunctions";
 import cellTransformationFunctions, {
   CellTransformationFunction,
 } from "./cellTransformationFunctions";
+import { Cell } from "./cell";
+import { CellArray } from "./cellArray";
+import { CellPosition } from "./cellPosition";
 
-export type Cell = {
-  hexagon: Hexagon;
-  cell: HTMLDivElement;
-};
+const iterationInterval = 6000;
+const timingSpread = 1500;
 
 const check = () => {
   const main = document.getElementById("hexagon-container");
   if (!main) return;
 
   const cells: Cell[] = [];
+  const cellArray = new CellArray();
 
-  let rowNumber = 0;
+  let cellY = 0;
   let cell: HTMLDivElement;
 
   for (;;) {
-    let columnNumber = 0;
+    let cellX = 0;
 
     for (;;) {
       const colors = randomColorPair();
       const hexagon = new Hexagon();
       hexagon.color = colors.bg;
+      // hexagon.parts.top.text = `x=${cellX} y=${cellY}`;
       hexagon.parts.middle.text = randomElementFrom("HEXAGON".split(""));
       hexagon.parts.middle.color = colors.fg;
       cell = document.createElement("div");
       cell.className = "hexagon-cell";
       cell.appendChild(hexagon.element);
 
-      cell.setAttribute(
-        "style",
-        `--row: ${rowNumber}; --column: ${columnNumber}; --column-mod-2: ${columnNumber % 2};`
+      const cellStruct = new Cell(
+        CellPosition.at(cellX, cellY),
+        hexagon,
+        cell,
+        cellArray
       );
 
       main.appendChild(cell);
+      cells.push(cellStruct);
 
-      cells.push({ hexagon, cell });
-
-      ++columnNumber;
-      if (cell.offsetLeft > screen.availWidth) break;
+      ++cellX;
+      if (cell.offsetLeft > cell.parentElement!.clientWidth) break;
     }
 
-    ++rowNumber;
-    if (cell.offsetTop > screen.availHeight) break;
+    ++cellY;
+    if (cell.offsetTop > cell.parentElement!.clientHeight) break;
   }
 
   const iterate = () => {
@@ -57,15 +61,18 @@ const check = () => {
     )(cells);
     const itemsWithDelays = normaliseRange(
       cells.map(item => [item, timingFunction(item)]),
-      100,
-      1500
+      0,
+      timingSpread
     );
     for (const [item, delay] of itemsWithDelays) {
       setTimeout(() => transformationFunction(item), delay);
     }
   };
 
-  let timeout: NodeJS.Timeout | undefined = setInterval(iterate, 6000);
+  let timeout: NodeJS.Timeout | undefined = setInterval(
+    iterate,
+    iterationInterval
+  );
 
   document.addEventListener("keydown", event => {
     if (event.key === "f") {
@@ -84,7 +91,7 @@ const check = () => {
     }
 
     if (event.key === "g" && !timeout) {
-      timeout = setInterval(iterate, 6000);
+      timeout = setInterval(iterate, iterationInterval);
     }
   });
 };
