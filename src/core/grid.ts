@@ -1,16 +1,16 @@
 import { Cell } from "./cell";
-import { CellPosition } from "./cellPosition";
+import { Position } from "./position";
 import {
   mapNeighbours,
   neighboursOfPosition,
   type Neighbours,
 } from "./neighbours";
 
-export class CellArray {
+export class Grid {
   private readonly index: Record<string, Cell[]> = {};
 
-  public static from(cells: Iterable<Cell>): CellArray {
-    const array = new CellArray();
+  public static from(cells: Iterable<Cell>): Grid {
+    const array = new Grid();
     for (const cell of cells) {
       array.add(cell);
     }
@@ -36,16 +36,26 @@ export class CellArray {
   }
 
   // The cell at the head of the queue
-  public cellAt(pos: CellPosition): Cell | undefined {
+  public cellAt(pos: Position): Cell | undefined {
     return (this.index[pos.toKey()] ||= [])[0];
   }
 
   // All cells in the queue
-  public cellsAt(pos: CellPosition): ReadonlyArray<Cell> {
+  public cellsAt(pos: Position): ReadonlyArray<Cell> {
     return (this.index[pos.toKey()] ||= []);
   }
 
-  public neighboursOf(pos: CellPosition): Neighbours<Cell | undefined> {
+  public neighboursOf(pos: Position): Neighbours<Cell | undefined> {
     return mapNeighbours(neighboursOfPosition(pos), npos => this.cellAt(npos));
+  }
+
+  public cells(): ReadonlyArray<Cell> {
+    const out: Cell[] = [];
+
+    for (const pos in this.index) {
+      out.push(...this.index[pos]);
+    }
+
+    return out;
   }
 }

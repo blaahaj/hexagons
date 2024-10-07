@@ -1,5 +1,5 @@
-import { Cell } from "./cell";
-import { randomElementFrom } from "./lib/randomThings";
+import { Cell } from "../../core/cell";
+import { randomElementFrom } from "../../lib/randomThings";
 
 export type CellTimingFunction = (
   cells: ReadonlyArray<Cell>
@@ -15,8 +15,8 @@ export const timingRadial: CellTimingFunction = () => {
   const scale = randomElementFrom([+1, -1]);
   return item =>
     Math.sqrt(
-      (originX - item.cell.offsetLeft) ** 2 +
-        (originY - item.cell.offsetTop) ** 2
+      (originX - item.element.offsetLeft) ** 2 +
+        (originY - item.element.offsetTop) ** 2
     ) * scale;
 };
 
@@ -26,8 +26,8 @@ export const timingClock: CellTimingFunction = () => {
   const scale = randomElementFrom([+1, -1]);
   const start = Math.random() * 2;
   return item => {
-    const dx = originX - item.cell.offsetLeft;
-    const dy = originY - item.cell.offsetTop;
+    const dx = originX - item.element.offsetLeft;
+    const dy = originY - item.element.offsetTop;
     let angle = Math.atan2(dy, dx) / Math.PI + 1; // range: (0, 2)
     if (angle < start) angle += 2;
 

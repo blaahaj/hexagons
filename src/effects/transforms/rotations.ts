@@ -1,6 +1,6 @@
-import { type CellTransformationFunction } from "./cellTransformationFunctions";
-import { Cell } from "./cell";
-import { randomElementFrom } from "./lib/randomThings";
+import { type CellTransformationFunction } from "./index";
+import { Cell } from "../../core/cell";
+import { randomElementFrom } from "../../lib/randomThings";
 
 type F = CellTransformationFunction;
 

@@ -1,9 +1,9 @@
-import { Cell } from "./cell";
+import { Cell } from "../../core/cell";
 
-import * as col from "./cellColourFunctions";
-import * as con from "./cellContentFunctions";
-import * as rot from "./cellRotationFunctions";
-import { CellTransformationFunction } from "./cellTransformationFunctions";
+import * as col from "./color";
+import * as con from "./content";
+import * as rot from "./rotations";
+import { CellTransformationFunction } from "./index";
 
 type F = CellTransformationFunction;
 

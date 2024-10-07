@@ -1,60 +1,51 @@
-import { Hexagon } from "./hexagon";
+import { Hexagon } from "./core/hexagon";
 import { randomColorPair, randomElementFrom } from "./lib/randomThings";
 import normaliseRange from "./lib/normaliseRange";
-import cellTimingFunctions, { CellTimingFunction } from "./cellTimingFunctions";
-import cellTransformationFunctions, {
-  CellTransformationFunction,
-} from "./cellTransformationFunctions";
-import { Cell } from "./cell";
-import { CellArray } from "./cellArray";
-import { CellPosition } from "./cellPosition";
+import cellTimingFunctions from "./effects/timing/cellTimingFunctions";
+import cellTransformationFunctions from "./effects/transforms/index";
+import { Cell } from "./core/cell";
+import { Grid } from "./core/grid";
+import { Position } from "./core/position";
 
 const iterationInterval = 6000;
 const timingSpread = 1500;
 
-const check = () => {
-  const main = document.getElementById("hexagon-container");
-  if (!main) return;
-
-  const cells: Cell[] = [];
-  const cellArray = new CellArray();
-
+const initGrid = (container: HTMLElement): Grid => {
+  const grid = new Grid();
+  let cellX = 0;
   let cellY = 0;
-  let cell: HTMLDivElement;
 
   for (;;) {
-    let cellX = 0;
+    const hexagon = new Hexagon();
 
-    for (;;) {
-      const colors = randomColorPair();
-      const hexagon = new Hexagon();
-      hexagon.color = colors.bg;
-      // hexagon.parts.top.text = `x=${cellX} y=${cellY}`;
-      hexagon.parts.middle.text = randomElementFrom("HEXAGON".split(""));
-      hexagon.parts.middle.color = colors.fg;
-      cell = document.createElement("div");
-      cell.className = "hexagon-cell";
-      cell.appendChild(hexagon.element);
+    const colors = randomColorPair();
+    hexagon.color = colors.bg;
+    // hexagon.parts.top.text = `x=${cellX} y=${cellY}`;
+    hexagon.parts.middle.text = randomElementFrom("HEXAGON".split(""));
+    hexagon.parts.middle.color = colors.fg;
 
-      const cellStruct = new Cell(
-        CellPosition.at(cellX, cellY),
-        hexagon,
-        cell,
-        cellArray
-      );
+    const cell = new Cell(Position.at(cellX, cellY), hexagon, grid);
 
-      main.appendChild(cell);
-      cells.push(cellStruct);
+    container.appendChild(cell.element);
 
+    if (cell.element.offsetTop > cell.element.parentElement!.clientHeight)
+      break;
+
+    if (cell.element.offsetLeft > cell.element.parentElement!.clientWidth) {
+      cellX = 0;
+      ++cellY;
+    } else {
       ++cellX;
-      if (cell.offsetLeft > cell.parentElement!.clientWidth) break;
     }
-
-    ++cellY;
-    if (cell.offsetTop > cell.parentElement!.clientHeight) break;
   }
 
-  const iterate = () => {
+  return grid;
+};
+
+const makeIterator = (grid: Grid): (() => void) => {
+  const cells = grid.cells();
+
+  return () => {
     const timingFunction = randomElementFrom(cellTimingFunctions)(cells);
     const transformationFunction = randomElementFrom(
       cellTransformationFunctions
@@ -68,6 +59,14 @@ const check = () => {
       setTimeout(() => transformationFunction(item), delay);
     }
   };
+};
+
+const check = () => {
+  const container = document.getElementById("hexagon-container");
+  if (!container) return;
+
+  const grid = initGrid(container);
+  const iterate = makeIterator(grid);
 
   let timeout: NodeJS.Timeout | undefined = setInterval(
     iterate,
