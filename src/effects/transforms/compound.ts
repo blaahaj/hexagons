@@ -7,7 +7,7 @@ import { CellTransformationFunction } from "./index";
 
 type F = CellTransformationFunction;
 
-const compound =
+export const compound =
   (...transformations: F[]): F =>
   (cells: ReadonlyArray<Cell>) => {
     const fns = transformations.map(t => t(cells));

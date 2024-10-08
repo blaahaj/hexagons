@@ -8,6 +8,7 @@ import {
 
 export class Grid {
   private readonly index: Record<string, Cell[]> = {};
+  private _boundary: Position;
 
   public static from(cells: Iterable<Cell>): Grid {
     const array = new Grid();
@@ -18,6 +19,14 @@ export class Grid {
   }
 
   constructor() {}
+
+  public set boundary(pos: Position) {
+    this._boundary ||= pos;
+  }
+
+  public get boundary(): Position {
+    return this._boundary;
+  }
 
   // Push cell to its position's queue
   public add(cell: Cell): void {

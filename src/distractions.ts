@@ -28,16 +28,24 @@ const initGrid = (container: HTMLElement): Grid => {
 
     container.appendChild(cell.element);
 
-    if (cell.element.offsetTop > cell.element.parentElement!.clientHeight)
-      break;
+    if (
+      cell.element.offsetLeft + cell.element.offsetWidth >
+      cell.element.parentElement!.clientWidth
+    ) {
+      if (
+        cell.element.offsetTop + cell.element.offsetHeight >
+        cell.element.parentElement!.clientHeight
+      )
+        break;
 
-    if (cell.element.offsetLeft > cell.element.parentElement!.clientWidth) {
       cellX = 0;
       ++cellY;
     } else {
       ++cellX;
     }
   }
+
+  grid.boundary = Position.at(cellX, cellY);
 
   return grid;
 };

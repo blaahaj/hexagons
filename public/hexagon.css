@@ -37,6 +37,10 @@ body {
   );
 }
 
+.hexagon-cell.no-animate {
+  transition-property: none;
+}
+
 .hexagon {
   background: gray;
   opacity: 1;

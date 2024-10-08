@@ -1,6 +1,10 @@
 import cellColourFunctions from "./color";
 import cellContentFunctions from "./content";
-import cellRotationFunctions from "./rotations";
+import cellRotationFunctions, {
+  transformIndependentRotateAll,
+  transformSingleRotateAll,
+  transformSingleRotateZ,
+} from "./rotations";
 import cellCompoundFunctions from "./compound";
 import { Cell } from "../../core/cell";
 import { Position } from "../../core/position";
@@ -10,6 +14,7 @@ import {
   NeighbourDirections,
   neighboursOfPosition,
 } from "../../core/neighbours";
+import { compound } from "./compound";
 
 export type CellTransformationFunction = (
   cells: ReadonlyArray<Cell>
@@ -115,6 +120,46 @@ const swapNeighbourTriosViaTranslate: CellTransformationFunction = cells => {
   };
 };
 
+const moveEverythingViaTranslate: CellTransformationFunction = cells => {
+  const direction = randomElementFrom(NeighbourDirections);
+  const moves: { cell: Cell; newPosition: Position; visible: boolean }[] = [];
+  const boundary = cells[0].grid.boundary;
+  const homeless: Cell[] = [];
+  const unfilled = cells.map(cell => cell.position);
+
+  for (const cell of cells) {
+    const to = neighboursOfPosition(cell.position)[direction];
+
+    if (to.x >= 0 && to.y >= 0 && to.x <= boundary.x && to.y <= boundary.y) {
+      moves.push({ cell, newPosition: to, visible: true });
+      const idx = unfilled.findIndex(pos => pos.toKey() === to.toKey());
+      if (idx !== undefined) unfilled.splice(idx, 1);
+    } else {
+      homeless.push(cell);
+    }
+  }
+
+  if (homeless.length != unfilled.length) throw "Mismatch";
+
+  for (const [idx, cell] of homeless.entries()) {
+    const to = unfilled[idx];
+    moves.push({ cell, newPosition: to, visible: false });
+  }
+
+  return cell => {
+    const move = moves.find(m => m.cell === cell);
+    if (!move) throw "No move";
+
+    if (!move.visible) {
+      cell.element.classList.add("no-animate");
+      cell.position = move.newPosition;
+      setTimeout(() => cell.element.classList.remove("no-animate"), 100);
+    } else {
+      cell.position = move.newPosition;
+    }
+  };
+};
+
 export default [
   ...cellColourFunctions,
   ...cellContentFunctions,
@@ -123,4 +168,8 @@ export default [
   swapRandomPairsViaTranslate,
   swapNeighbourPairsViaTranslate,
   swapNeighbourTriosViaTranslate,
+  moveEverythingViaTranslate,
+  compound(moveEverythingViaTranslate, transformSingleRotateZ),
+  compound(moveEverythingViaTranslate, transformSingleRotateAll),
+  compound(moveEverythingViaTranslate, transformIndependentRotateAll),
 ] as const;
