@@ -98,5 +98,5 @@ export default [
   transformSingleRotateY,
   transformSingleRotateZ,
   transformIndependentRotateAll,
-  transformIndependentMakeWonky,
+  // transformIndependentMakeWonky,
 ] as const;

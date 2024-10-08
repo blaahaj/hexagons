@@ -18,7 +18,7 @@ const compound =
 
 export default [
   compound(col.transformMakeSingleRandomColor, rot.transformSingleRotateAll),
-  compound(con.transformSymbolsFromWord, rot.transformIndependentMakeWonky),
+  // compound(con.transformSymbolsFromWord, rot.transformIndependentMakeWonky),
   compound(con.transformSymbolsFromWord, rot.transformSingleRotateX),
   compound(
     con.transformSymbolsFromWord,
