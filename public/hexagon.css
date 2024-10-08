@@ -16,10 +16,14 @@ body {
   /* Ensure we have some hexagons off-screen, so that transitions
   ** which move hexagons don't visibly hit the edge of the animatable
   ** space. */
-  left: calc(var(--hex-long-radius) * -5);
-  top: calc(var(--hex-short-radius) * -5);
-  bottom: calc(var(--hex-short-radius) * -5);
-  right: calc(var(--hex-long-radius) * -5);
+  /* Normally negative; set to positive for debugging */
+  --margin-radii: -4;
+  border: 1px solid red;
+
+  left: calc(var(--hex-long-radius) * var(--margin-radii));
+  top: calc(var(--hex-short-radius) * var(--margin-radii));
+  bottom: calc(var(--hex-short-radius) * (var(--margin-radii) + 1));
+  right: calc(var(--hex-long-radius) * (var(--margin-radii) + 2));
 }
 
 .hexagon-cell {
@@ -31,6 +35,10 @@ body {
   left: calc(
     var(--hexagon-spacing) * var(--cell-x) * var(--hex-long-radius) * 1.5
   );
+}
+
+.hexagon-cell.no-animate {
+  transition-property: none;
 }
 
 .hexagon {

@@ -1,6 +1,6 @@
-import { randomColorPair, randomElementFrom } from "./lib/randomThings";
-import { schemes } from "./colorSchemes";
-import { CellTransformationFunction } from "./cellTransformationFunctions";
+import { randomColorPair, randomElementFrom } from "../../lib/randomThings";
+import { schemes } from "../../lib/colorSchemes";
+import { CellTransformationFunction } from "./index";
 
 type F = CellTransformationFunction;
 

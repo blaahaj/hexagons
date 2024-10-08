@@ -1,6 +1,6 @@
-export class CellPosition {
-  public static at(x: number, y: number): CellPosition {
-    return new CellPosition(x, y);
+export class Position {
+  public static at(x: number, y: number): Position {
+    return new Position(x, y);
   }
 
   constructor(
