@@ -35,4 +35,26 @@ export const timingClock: CellTimingFunction = () => {
   };
 };
 
-export default [timingZero, timingRandom, timingRadial, timingClock] as const;
+export const wipeCentreLine: CellTimingFunction = cells => {
+  const isUpAndDown = randomElementFrom([true, false]);
+  const direction = randomElementFrom([+1, -1]);
+
+  const half =
+    cells[0].element.parentElement![
+      isUpAndDown ? "clientHeight" : "clientWidth"
+    ] / 2;
+
+  return item =>
+    Math.abs(
+      item.element[isUpAndDown ? "offsetTop" : "offsetLeft"] +
+        item.element[isUpAndDown ? "offsetHeight" : "offsetWidth"] / 2 -
+        half
+    ) * direction;
+};
+
+export default [
+  timingZero,
+  timingRandom,
+  timingRadial,
+  wipeCentreLine,
+] as const;
