@@ -3,7 +3,7 @@ import { Position } from "../../core/position";
 import { randomElementFrom } from "../../lib/randomThings";
 
 export type CellTimingFunction = (
-  cells: ReadonlyArray<Cell>
+  cells: readonly Cell[]
 ) => (cell: Cell) => number;
 
 export const timingZero: CellTimingFunction = () => () => 0;
@@ -57,8 +57,8 @@ export const timingSpiral: CellTimingFunction = cells => {
   const grid = cells[0].grid;
   const boundary = grid.boundary;
   const center = Position.at(
-    Math.floor(boundary.x / 2),
-    Math.floor(boundary.y / 2)
+    Math.floor(boundary!.x / 2),
+    Math.floor(boundary!.y / 2)
   );
   const euclideanCenter = center.toEuclidean();
 

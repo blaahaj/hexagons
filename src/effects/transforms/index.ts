@@ -6,7 +6,7 @@ import cellCompoundFunctions from "./compound";
 import { Cell } from "../../core/cell";
 
 export type CellTransformationFunction = (
-  cells: ReadonlyArray<Cell>
+  cells: readonly Cell[]
 ) => (cell: Cell) => void;
 
 export default [

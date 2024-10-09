@@ -1,9 +1,9 @@
 export const HexagonContentPosition = ["top", "middle", "bottom"] as const;
 
-type TextPart = {
+interface TextPart {
   readonly span: HTMLSpanElement;
   text: string;
-};
+}
 
 export class HexagonPart {
   public readonly element: HTMLDivElement;
@@ -28,7 +28,7 @@ export class HexagonPart {
   }
 
   get text() {
-    return this.texts[0].span.innerHTML ?? "";
+    return this.texts[0].span.innerHTML;
   }
 
   set text(value) {
@@ -43,8 +43,8 @@ export class HexagonPart {
     return this.element.style.color;
   }
 
-  set color(value) {
-    this.element.style.color = value ?? "inherit";
+  set color(value: string) {
+    this.element.style.color = value;
   }
 }
 

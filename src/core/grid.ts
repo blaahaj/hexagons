@@ -7,8 +7,8 @@ import {
 } from "./neighbours";
 
 export class Grid {
-  private readonly index: Record<string, Cell[]> = {};
-  private _boundary: Position;
+  private readonly index: Record<string, Cell[] | undefined> = {};
+  private _boundary: Position | undefined;
 
   public static from(cells: Iterable<Cell>): Grid {
     const array = new Grid();
@@ -18,13 +18,11 @@ export class Grid {
     return array;
   }
 
-  constructor() {}
-
   public set boundary(pos: Position) {
     this._boundary ||= pos;
   }
 
-  public get boundary(): Position {
+  public get boundary(): Position | undefined {
     return this._boundary;
   }
 
@@ -50,7 +48,7 @@ export class Grid {
   }
 
   // All cells in the queue
-  public cellsAt(pos: Position): ReadonlyArray<Cell> {
+  public cellsAt(pos: Position): readonly Cell[] {
     return (this.index[pos.toKey()] ||= []);
   }
 
@@ -58,11 +56,11 @@ export class Grid {
     return mapNeighbours(neighboursOfPosition(pos), npos => this.cellAt(npos));
   }
 
-  public cells(): ReadonlyArray<Cell> {
+  public cells(): readonly Cell[] {
     const out: Cell[] = [];
 
     for (const pos in this.index) {
-      out.push(...this.index[pos]);
+      out.push(...(this.index[pos] ?? []));
     }
 
     return out;

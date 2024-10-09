@@ -15,11 +15,13 @@ export const transformSingleRotateAll: F = () => {
   };
 };
 
+const rotateXPattern = /rotateX\((.*)deg\)/;
+
 export const transformSingleRotateX: F = cells => {
   const seen: Record<string, number> = {};
 
   for (const cell of cells) {
-    const m = cell.hexagon.rX.style.transform.match(/rotateX\((.*)deg\)/);
+    const m = rotateXPattern.exec(cell.hexagon.rX.style.transform);
     const degrees = m?.[1] ?? "0";
     seen[degrees] = (seen[degrees] ?? 0) + 1;
   }
@@ -41,9 +43,9 @@ export const transformSingleRotateX: F = cells => {
   if (Math.random() < 1 / 3) {
     // Flip, retaining wonkiness (if any)
     return item => {
-      const m = item.hexagon.rX.style.transform.match(/rotateX\((.*)deg\)/);
+      const m = rotateXPattern.exec(item.hexagon.rX.style.transform);
       const existing = parseFloat(m?.[1] ?? "0");
-      let degX = 180 - existing;
+      const degX = 180 - existing;
       item.hexagon.rX.style.transform = `rotateX(${degX}deg)`;
     };
   } else {

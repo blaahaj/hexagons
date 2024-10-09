@@ -10,10 +10,12 @@ type F = CellTransformationFunction;
 
 export const compound =
   (...transformations: F[]): F =>
-  (cells: ReadonlyArray<Cell>) => {
+  (cells: readonly Cell[]) => {
     const fns = transformations.map(t => t(cells));
     return item => {
-      fns.forEach(fn => fn(item));
+      fns.forEach(fn => {
+        fn(item);
+      });
     };
   };
 

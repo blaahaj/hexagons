@@ -38,7 +38,7 @@ export const swapNeighbourPairsViaTranslate: CellTransformationFunction =
     const moves: { cell: Cell; newPosition: Position }[] = [];
 
     while (copy.length > cells.length * 0.9 && copy.length >= 2) {
-      let n = Math.floor(Math.random() * copy.length);
+      const n = Math.floor(Math.random() * copy.length);
       const c0 = copy.splice(n, 1)[0];
 
       const neighbourCells = c0.neighbours();
@@ -74,11 +74,10 @@ export const swapNeighbourTriosViaTranslate: CellTransformationFunction =
     const moves: { cell: Cell; newPosition: Position }[] = [];
 
     while (copy.length > 0) {
-      let n = Math.floor(Math.random() * copy.length);
+      const n = Math.floor(Math.random() * copy.length);
       const c0 = copy.splice(n, 1)[0];
 
       const neighbourCells = c0.neighbours();
-      if (!neighbourCells) throw new Error("no array");
 
       const availableNeighbours = mapNeighbours(neighbourCells, c =>
         c && copy.includes(c) ? c : undefined
@@ -121,16 +120,16 @@ export const moveEverythingViaTranslate: CellTransformationFunction = cells => {
   for (const cell of cells) {
     const to = neighboursOfPosition(cell.position)[direction];
 
-    if (to.x >= 0 && to.y >= 0 && to.x <= boundary.x && to.y <= boundary.y) {
+    if (to.x >= 0 && to.y >= 0 && to.x <= boundary!.x && to.y <= boundary!.y) {
       moves.push({ cell, newPosition: to, visible: true });
       const idx = unfilled.findIndex(pos => pos.toKey() === to.toKey());
-      if (idx !== undefined) unfilled.splice(idx, 1);
+      if (idx >= 0) unfilled.splice(idx, 1);
     } else {
       homeless.push(cell);
     }
   }
 
-  if (homeless.length != unfilled.length) throw "Mismatch";
+  if (homeless.length != unfilled.length) throw new Error("Mismatch");
 
   for (const [idx, cell] of homeless.entries()) {
     const to = unfilled[idx];
@@ -139,12 +138,14 @@ export const moveEverythingViaTranslate: CellTransformationFunction = cells => {
 
   return cell => {
     const move = moves.find(m => m.cell === cell);
-    if (!move) throw "No move";
+    if (!move) throw new Error("No move");
 
     if (!move.visible) {
       cell.element.classList.add("no-animate");
       cell.position = move.newPosition;
-      setTimeout(() => cell.element.classList.remove("no-animate"), 100);
+      setTimeout(() => {
+        cell.element.classList.remove("no-animate");
+      }, 100);
     } else {
       cell.position = move.newPosition;
     }
