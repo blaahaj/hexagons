@@ -1,8 +1,9 @@
 import { Cell } from "../../core/cell";
+import { Position } from "../../core/position";
 import { randomElementFrom } from "../../lib/randomThings";
 
 export type CellTimingFunction = (
-  cells: ReadonlyArray<Cell>
+  cells: readonly Cell[]
 ) => (cell: Cell) => number;
 
 export const timingZero: CellTimingFunction = () => () => 0;
@@ -35,7 +36,7 @@ export const timingClock: CellTimingFunction = () => {
   };
 };
 
-export const wipeCentreLine: CellTimingFunction = cells => {
+export const timingWipeCentreLine: CellTimingFunction = cells => {
   const isUpAndDown = randomElementFrom([true, false]);
   const direction = randomElementFrom([+1, -1]);
 
@@ -52,9 +53,29 @@ export const wipeCentreLine: CellTimingFunction = cells => {
     ) * direction;
 };
 
+export const timingSpiral: CellTimingFunction = cells => {
+  const grid = cells[0].grid;
+  const boundary = grid.boundary;
+  const center = Position.at(
+    Math.floor(boundary!.x / 2),
+    Math.floor(boundary!.y / 2)
+  );
+  const euclideanCenter = center.toEuclidean();
+
+  // Imperfect. Not sure why.
+  return cell => {
+    const e = cell.position.toEuclidean().offsetFrom(euclideanCenter);
+    const angle = e.angle();
+    let distance = e.distance();
+    distance = Math.max(distance - 1.5, 0);
+    return distance + (angle + Math.PI) / (Math.PI * 2);
+  };
+};
+
 export default [
   timingZero,
   timingRandom,
   timingRadial,
-  wipeCentreLine,
+  timingWipeCentreLine,
+  timingSpiral,
 ] as const;

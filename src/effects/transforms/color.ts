@@ -1,5 +1,6 @@
 import { randomColorPair, randomElementFrom } from "../../lib/randomThings";
 import { schemes } from "../../lib/colorSchemes";
+import { generateRange } from "../../lib/generateRange";
 import { CellTransformationFunction } from "./index";
 
 type F = CellTransformationFunction;
@@ -19,7 +20,7 @@ export const transformIndependentRandomColors: F = () => item => {
 };
 
 export const transformNRandomColors: F = () => {
-  const colorPairs = [...Array(1 + Math.floor(Math.random() * 6))].map(() =>
+  const colorPairs = [...generateRange(Math.random() * 6)].map(() =>
     randomColorPair()
   );
   return item => {
@@ -60,8 +61,8 @@ export const transformToRandomColorScheme: F = () => {
 
   return item => {
     const n = Math.random() * totalWeight;
-    const entry = entries.filter(e => n >= e.start && n < e.end)[0];
-    item.hexagon.color = entry.color;
+    const entry = entries.find(e => n >= e.start && n < e.end);
+    item.hexagon.color = entry!.color;
   };
 };
 

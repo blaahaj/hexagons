@@ -1,6 +1,7 @@
 import { CellTransformationFunction } from "./index";
 import { Cell } from "../../core/cell";
 import { randomElementFrom, randomSymbol } from "../../lib/randomThings";
+import { generateRange } from "../../lib/generateRange";
 
 type F = CellTransformationFunction;
 
@@ -13,7 +14,7 @@ export const transformIndependentRandomSymbols: F = () => item =>
   (item.hexagon.parts.middle.text = randomSymbol());
 
 export const transformNRandomSymbols: F = () => {
-  const symbols = [...Array(1 + Math.floor(Math.random() * 6))].map(() =>
+  const symbols = [...generateRange(Math.random() * 6)].map(() =>
     randomSymbol()
   );
   return (item: Cell) => {

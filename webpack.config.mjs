@@ -1,6 +1,7 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require("path");
+// (async () => {
+const path = await import("node:path");
 
 const isProduction = process.env.NODE_ENV == "production";
 
@@ -9,7 +10,7 @@ const stylesHandler = "style-loader";
 const config = {
   entry: "./src/distractions.ts",
   output: {
-    path: path.resolve(__dirname, "public/js"),
+    path: path.resolve(import.meta.dirname, "public/js"),
   },
   devServer: {
     open: true,
@@ -40,7 +41,8 @@ const config = {
   },
 };
 
-module.exports = () => {
+// module.exports = () => {
+export default () => {
   if (isProduction) {
     config.mode = "production";
   } else {
@@ -48,3 +50,4 @@ module.exports = () => {
   }
   return config;
 };
+// })();

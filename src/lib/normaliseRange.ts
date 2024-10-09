@@ -1,5 +1,5 @@
 export default <T>(
-  items: ReadonlyArray<Readonly<[T, number]>>,
+  items: readonly Readonly<[T, number]>[],
   outputMin: number,
   outputMax: number
 ) => {

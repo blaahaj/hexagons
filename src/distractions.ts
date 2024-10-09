@@ -64,7 +64,9 @@ const makeIterator = (grid: Grid): (() => void) => {
       timingSpread
     );
     for (const [item, delay] of itemsWithDelays) {
-      setTimeout(() => transformationFunction(item), delay);
+      setTimeout(() => {
+        transformationFunction(item);
+      }, delay);
     }
   };
 };
@@ -76,16 +78,16 @@ const check = () => {
   const grid = initGrid(container);
   const iterate = makeIterator(grid);
 
-  let timeout: NodeJS.Timeout | undefined = setInterval(
-    iterate,
-    iterationInterval
-  );
+  let timeout: NodeJS.Timeout | undefined = setTimeout(() => {
+    timeout = setInterval(iterate, iterationInterval);
+    iterate();
+  }, iterationInterval / 2);
 
   document.addEventListener("keydown", event => {
     if (event.key === "f") {
       if (document.fullscreenElement === null)
-        document.body.requestFullscreen();
-      else document.exitFullscreen();
+        document.body.requestFullscreen().catch(() => undefined);
+      else document.exitFullscreen().catch(() => undefined);
     }
 
     if (event.key === "n" && !timeout) {

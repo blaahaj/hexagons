@@ -1,8 +1,8 @@
 // colors taken from https://en.wikipedia.org/wiki/Pride_flag
 
-export type ColorScheme = {
+export interface ColorScheme {
   weightedColors: Record<string, number>;
-};
+}
 
 const transgender: ColorScheme = {
   weightedColors: {

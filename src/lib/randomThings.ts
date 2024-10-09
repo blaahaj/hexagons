@@ -34,5 +34,5 @@ export const randomColorPair = (() => {
   };
 })();
 
-export const randomElementFrom = <T>(items: ReadonlyArray<T>) =>
+export const randomElementFrom = <T>(items: readonly T[]) =>
   items[Math.floor(Math.random() * items.length)];
