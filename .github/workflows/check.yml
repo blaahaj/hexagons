@@ -11,6 +11,8 @@ jobs:
   node:
     runs-on: ubuntu-latest
     steps:
+      - name: Debug the environment
+        run: ./debug-environment.sh
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install asdf & tools
