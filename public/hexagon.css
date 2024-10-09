@@ -10,7 +10,7 @@ body {
   --hexagon-spacing: 1.04;
   --hex-short-radius: 3.3em;
   --hex-long-radius: calc(var(--hex-short-radius) / sin(60deg));
-  --duration: 3s;
+  --duration: 1s;
   position: absolute;
 
   /* Ensure we have some hexagons off-screen, so that transitions

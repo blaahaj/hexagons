@@ -1,8 +1,9 @@
-import cellColourFunctions from "./color";
+import cellColourFunctions, { transformMakeSingleRandomColor } from "./color";
 import cellContentFunctions from "./content";
 import cellRotationFunctions, {
   transformIndependentRotateAll,
   transformSingleRotateAll,
+  transformSingleRotateX,
   transformSingleRotateZ,
 } from "./rotations";
 import cellCompoundFunctions from "./compound";
