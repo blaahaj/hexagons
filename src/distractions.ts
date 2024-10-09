@@ -76,10 +76,10 @@ const check = () => {
   const grid = initGrid(container);
   const iterate = makeIterator(grid);
 
-  let timeout: NodeJS.Timeout | undefined = setInterval(
-    iterate,
-    iterationInterval
-  );
+  let timeout: NodeJS.Timeout | undefined = setTimeout(() => {
+    timeout = setInterval(iterate, iterationInterval);
+    iterate();
+  }, iterationInterval / 2);
 
   document.addEventListener("keydown", event => {
     if (event.key === "f") {
