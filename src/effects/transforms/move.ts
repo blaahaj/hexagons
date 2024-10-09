@@ -152,8 +152,8 @@ export const moveEverythingViaTranslate: CellTransformationFunction = cells => {
 };
 
 export default [
-  swapRandomPairsViaTranslate,
-  swapNeighbourPairsViaTranslate,
-  swapNeighbourTriosViaTranslate,
+  // swapRandomPairsViaTranslate,
+  // swapNeighbourPairsViaTranslate,
+  // swapNeighbourTriosViaTranslate,
   moveEverythingViaTranslate,
 ] as const;
