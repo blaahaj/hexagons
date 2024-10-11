@@ -48,6 +48,12 @@ export class HexagonPart {
   }
 }
 
+interface RotateDegrees {
+  x: number;
+  y: number;
+  z: number;
+}
+
 export class Hexagon {
   public readonly parts: {
     top: HexagonPart;
@@ -58,9 +64,10 @@ export class Hexagon {
   private readonly _color: string | undefined;
   private readonly hexagon: HTMLDivElement;
   public readonly element: HTMLDivElement;
-  public readonly rX: HTMLDivElement;
-  public readonly rY: HTMLDivElement;
-  public readonly rZ: HTMLDivElement;
+  private readonly rX: HTMLDivElement;
+  private readonly rY: HTMLDivElement;
+  private readonly rZ: HTMLDivElement;
+  private _rotateDegrees: RotateDegrees = { x: 0, y: 0, z: 0 };
 
   constructor() {
     const parts = (this.parts = {
@@ -96,5 +103,20 @@ export class Hexagon {
 
   set color(value: string | undefined) {
     this.hexagon.style.backgroundColor = value ?? "inherit";
+  }
+
+  get rotateDegrees(): Readonly<RotateDegrees> {
+    return this._rotateDegrees;
+  }
+
+  set rotateDegrees(value: RotateDegrees) {
+    this._rotateDegrees = {
+      x: value.x,
+      y: value.y,
+      z: value.z,
+    };
+    this.rX.style.transform = `rotateX(${this._rotateDegrees.x}deg)`;
+    this.rY.style.transform = `rotateY(${this._rotateDegrees.y}deg)`;
+    this.rZ.style.transform = `rotateZ(${this._rotateDegrees.z}deg)`;
   }
 }
