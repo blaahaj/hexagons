@@ -7,10 +7,14 @@ body {
 }
 
 #hexagon-container {
-  --hexagon-spacing: 1.04;
+  --hexagon-spacing: 1.06;
   --hex-short-radius: 3.3em;
   --hex-long-radius: calc(var(--hex-short-radius) / sin(60deg));
   --duration: 3s;
+  --rx: 0deg;
+  --ry: 0deg;
+  --rz: 0deg;
+  --backface-rotation: 0deg;
   position: absolute;
 
   /* Ensure we have some hexagons off-screen, so that transitions
@@ -26,7 +30,11 @@ body {
   right: calc(var(--hex-long-radius) * (var(--margin-radii) + 2));
 }
 
-.hexagon-cell {
+.no-animate {
+  transition-property: none !important;
+}
+
+.cell {
   position: absolute;
   top: calc(
     var(--hexagon-spacing) * (2 * var(--cell-y) + var(--cell-x-mod-2)) *
@@ -35,60 +43,59 @@ body {
   left: calc(
     var(--hexagon-spacing) * var(--cell-x) * var(--hex-long-radius) * 1.5
   );
+  transition-property: all;
+  transition-duration: var(--duration);
 }
 
-.hexagon-cell.no-animate {
-  transition-property: none;
+/* No special styling for .coin */
+.coin {
+  position: relative;
 }
 
-.hexagon {
+.face {
   background: gray;
   opacity: 1;
   clip-path: polygon(0 50%, 25% 100%, 75% 100%, 100% 50%, 75% 0, 25% 0);
   width: calc(var(--hex-long-radius) * 2);
   height: calc(var(--hex-short-radius) * 2);
+
+  transition-property: background-color transform;
+  transition-duration: var(--duration);
+  transform: rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(var(--rz))
+    rotateX(var(--backface-rotation));
+
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
-.hexagon--content {
+.text {
   text-align: center;
   line-height: 0;
   color: #fff;
   position: relative;
 }
 
-.hexagon--content-top {
+.text.top {
   font-size: calc(var(--hex-short-radius) * 0.23);
   top: 18%;
   font-weight: 400;
 }
 
-.hexagon--content-middle {
+.text.middle {
   font-size: calc(var(--hex-short-radius) * 0.83);
   top: 50%;
   font-weight: 700;
 }
 
-.hexagon--content-bottom {
+.text.bottom {
   font-size: calc(var(--hex-short-radius) * 0.19);
   top: 82%;
   font-weight: 400;
 }
 
-.hexagon-cell {
-  transition-property: top left;
-  transition-duration: var(--duration);
-}
-
-.hexagon,
-.hexagon--content,
-.rx,
-.ry,
-.rz {
-  transition-property: all;
-  transition-duration: var(--duration);
-}
-
-.hexagon--content > span {
+.alternate {
   position: absolute;
   left: 0;
   width: 100%;

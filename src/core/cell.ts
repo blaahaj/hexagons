@@ -1,6 +1,6 @@
 import { Grid } from "./grid";
 import { Position } from "./position";
-import { Hexagon } from "./hexagon";
+import { Coin } from "./coin";
 import type { Neighbours } from "./neighbours";
 
 export class Cell {
@@ -8,11 +8,11 @@ export class Cell {
 
   constructor(
     private pos: Position,
-    public readonly hexagon: Hexagon,
+    public readonly hexagon: Coin,
     public readonly grid: Grid
   ) {
     const element = document.createElement("div");
-    element.className = "hexagon-cell";
+    element.className = "cell";
     element.appendChild(hexagon.element);
 
     this.element = element;

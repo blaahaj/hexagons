@@ -9,30 +9,29 @@ export const transformSingleRotateAll: F = () => {
   const degY = randomElementFrom([0, 180]);
   const degZ = randomElementFrom([0, 60, 120, 180, 240]);
   return item => {
-    item.hexagon.rX.style.transform = `rotateX(${degX}deg)`;
-    item.hexagon.rY.style.transform = `rotateY(${degY}deg)`;
-    item.hexagon.rZ.style.transform = `rotateZ(${degZ}deg)`;
+    item.hexagon.rotateDegrees = { x: degX, y: degY, z: degZ };
   };
 };
-
-const rotateXPattern = /rotateX\((.*)deg\)/;
 
 export const transformSingleRotateX: F = cells => {
   const seen: Record<string, number> = {};
 
   for (const cell of cells) {
-    const m = rotateXPattern.exec(cell.hexagon.rX.style.transform);
-    const degrees = m?.[1] ?? "0";
-    seen[degrees] = (seen[degrees] ?? 0) + 1;
+    const key = cell.hexagon.rotateDegrees.x.toString();
+    seen[key] = (seen[key] ?? 0) + 1;
   }
 
   const variants = Object.keys(seen);
 
   if (variants.length === 1) {
     // Currently all the same; to avoid a no-op, flip them all
-    const degX = 180 - parseInt(variants[0]);
+    const to = 180 - cells[0].hexagon.rotateDegrees.x;
+
     return item => {
-      item.hexagon.rX.style.transform = `rotateX(${degX}deg)`;
+      item.hexagon.rotateDegrees = {
+        ...item.hexagon.rotateDegrees,
+        x: to,
+      };
     };
   }
 
@@ -43,15 +42,18 @@ export const transformSingleRotateX: F = cells => {
   if (Math.random() < 1 / 3) {
     // Flip, retaining wonkiness (if any)
     return item => {
-      const m = rotateXPattern.exec(item.hexagon.rX.style.transform);
-      const existing = parseFloat(m?.[1] ?? "0");
-      const degX = 180 - existing;
-      item.hexagon.rX.style.transform = `rotateX(${degX}deg)`;
+      item.hexagon.rotateDegrees = {
+        ...item.hexagon.rotateDegrees,
+        x: 180 - item.hexagon.rotateDegrees.x,
+      };
     };
   } else {
     const degX = randomElementFrom([0, 180]);
     return item => {
-      item.hexagon.rX.style.transform = `rotateX(${degX}deg)`;
+      item.hexagon.rotateDegrees = {
+        ...item.hexagon.rotateDegrees,
+        x: degX,
+      };
     };
   }
 };
@@ -59,14 +61,20 @@ export const transformSingleRotateX: F = cells => {
 export const transformSingleRotateY: F = () => {
   const degY = randomElementFrom([0, 180]);
   return item => {
-    item.hexagon.rY.style.transform = `rotateY(${degY}deg)`;
+    item.hexagon.rotateDegrees = {
+      ...item.hexagon.rotateDegrees,
+      y: degY,
+    };
   };
 };
 
 export const transformSingleRotateZ: F = () => {
   const degZ = randomElementFrom([0, 60, 120, 180, 240]);
   return item => {
-    item.hexagon.rZ.style.transform = `rotateZ(${degZ}deg)`;
+    item.hexagon.rotateDegrees = {
+      ...item.hexagon.rotateDegrees,
+      z: degZ,
+    };
   };
 };
 
@@ -75,9 +83,7 @@ export const transformIndependentRotateAll: F = () => {
     const degX = randomElementFrom([0, 180]);
     const degY = randomElementFrom([0, 180]);
     const degZ = randomElementFrom([0, 60, 120, 180, 240]);
-    item.hexagon.rX.style.transform = `rotateX(${degX}deg)`;
-    item.hexagon.rY.style.transform = `rotateY(${degY}deg)`;
-    item.hexagon.rZ.style.transform = `rotateZ(${degZ}deg)`;
+    item.hexagon.rotateDegrees = { x: degX, y: degY, z: degZ };
   };
 };
 
@@ -86,9 +92,7 @@ export const transformIndependentMakeWonky: F = () => {
     const degX = Math.random() * 10 - 5;
     const degY = Math.random() * 10 - 5;
     const degZ = Math.random() * 10 - 5;
-    item.hexagon.rX.style.transform = `rotateX(${degX}deg)`;
-    item.hexagon.rY.style.transform = `rotateY(${degY}deg)`;
-    item.hexagon.rZ.style.transform = `rotateZ(${degZ}deg)`;
+    item.hexagon.rotateDegrees = { x: degX, y: degY, z: degZ };
   };
 };
 
