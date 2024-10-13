@@ -14,11 +14,12 @@ export const timingRadial: CellTimingFunction = () => {
   const originX = Math.random() * document.body.clientWidth;
   const originY = Math.random() * document.body.clientHeight;
   const scale = randomElementFrom([+1, -1]);
-  return item =>
-    Math.sqrt(
-      (originX - item.element.offsetLeft) ** 2 +
-        (originY - item.element.offsetTop) ** 2
-    ) * scale;
+  return item => {
+    const pos = item.screenPosition;
+    return (
+      Math.sqrt((originX - pos.left) ** 2 + (originY - pos.top) ** 2) * scale
+    );
+  };
 };
 
 export const timingClock: CellTimingFunction = () => {
@@ -27,8 +28,9 @@ export const timingClock: CellTimingFunction = () => {
   const scale = randomElementFrom([+1, -1]);
   const start = Math.random() * 2;
   return item => {
-    const dx = originX - item.element.offsetLeft;
-    const dy = originY - item.element.offsetTop;
+    const pos = item.screenPosition;
+    const dx = originX - pos.left;
+    const dy = originY - pos.top;
     let angle = Math.atan2(dy, dx) / Math.PI + 1; // range: (0, 2)
     if (angle < start) angle += 2;
 
@@ -36,21 +38,22 @@ export const timingClock: CellTimingFunction = () => {
   };
 };
 
-export const timingWipeCentreLine: CellTimingFunction = cells => {
+export const timingWipeCentreLine: CellTimingFunction = () => {
   const isUpAndDown = randomElementFrom([true, false]);
   const direction = randomElementFrom([+1, -1]);
 
-  const half =
-    cells[0].element.parentElement![
-      isUpAndDown ? "clientHeight" : "clientWidth"
-    ] / 2;
+  const half = document.body[isUpAndDown ? "clientHeight" : "clientWidth"] / 2;
 
-  return item =>
-    Math.abs(
-      item.element[isUpAndDown ? "offsetTop" : "offsetLeft"] +
-        item.element[isUpAndDown ? "offsetHeight" : "offsetWidth"] / 2 -
-        half
-    ) * direction;
+  return item => {
+    const pos = item.screenPosition;
+    return (
+      Math.abs(
+        (isUpAndDown ? pos.top : pos.left) +
+          (isUpAndDown ? pos.height : pos.width) / 2 -
+          half
+      ) * direction
+    );
+  };
 };
 
 export const timingSpiral: CellTimingFunction = cells => {

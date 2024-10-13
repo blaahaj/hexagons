@@ -27,17 +27,17 @@ const initGrid = (container: HTMLElement): Grid => {
       face.parts.middle.color = colors.fg;
     }
 
-    const cell = new Cell(Position.at(cellX, cellY), coin, grid);
+    const { element } = Cell.create(Position.at(cellX, cellY), coin, grid);
 
-    container.appendChild(cell.element);
+    container.appendChild(element);
 
     if (
-      cell.element.offsetLeft + cell.element.offsetWidth >
-      cell.element.parentElement!.clientWidth
+      element.offsetLeft + element.offsetWidth >
+      element.parentElement!.clientWidth
     ) {
       if (
-        cell.element.offsetTop + cell.element.offsetHeight >
-        cell.element.parentElement!.clientHeight
+        element.offsetTop + element.offsetHeight >
+        element.parentElement!.clientHeight
       )
         break;
 

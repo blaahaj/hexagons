@@ -28,7 +28,7 @@ export const swapRandomPairsViaTranslate: CellTransformationFunction =
       const move = moves.find(m => m.cell === cell);
       if (move === undefined) return;
 
-      move.cell.position = move.newPosition;
+      move.cell.setPosition(move.newPosition, true);
     };
   };
 
@@ -64,7 +64,7 @@ export const swapNeighbourPairsViaTranslate: CellTransformationFunction =
       const move = moves.find(m => m.cell === cell);
       if (move === undefined) return;
 
-      move.cell.position = move.newPosition;
+      move.cell.setPosition(move.newPosition, true);
     };
   };
 
@@ -106,7 +106,7 @@ export const swapNeighbourTriosViaTranslate: CellTransformationFunction =
       const move = moves.find(m => m.cell === cell);
       if (move === undefined) return;
 
-      move.cell.position = move.newPosition;
+      move.cell.setPosition(move.newPosition, true);
     };
   };
 
@@ -140,15 +140,7 @@ export const moveEverythingViaTranslate: CellTransformationFunction = cells => {
     const move = moves.find(m => m.cell === cell);
     if (!move) throw new Error("No move");
 
-    if (!move.visible) {
-      cell.element.classList.add("no-transition");
-      cell.position = move.newPosition;
-      setTimeout(() => {
-        cell.element.classList.remove("no-transition");
-      }, 100);
-    } else {
-      cell.position = move.newPosition;
-    }
+    cell.setPosition(move.newPosition, move.visible);
   };
 };
 

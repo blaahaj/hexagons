@@ -2,11 +2,17 @@ import { Grid } from "./grid";
 import { Position } from "./position";
 import { Coin } from "./coin";
 import type { Neighbours } from "./neighbours";
+import { maybeTransition } from "../lib/maybeTransition";
 
 export class Cell {
-  public readonly element: HTMLDivElement;
+  protected readonly element: HTMLDivElement;
 
-  constructor(
+  public static create(pos: Position, coin: Coin, grid: Grid) {
+    const cell = new Cell(pos, coin, grid);
+    return { cell, element: cell.element };
+  }
+
+  protected constructor(
     private pos: Position,
     public readonly coin: Coin,
     public readonly grid: Grid
@@ -17,23 +23,35 @@ export class Cell {
 
     this.element = element;
     grid.add(this);
-    this.position = pos;
+    this.setPosition(pos, false);
   }
 
   get position(): Position {
     return this.pos;
   }
 
-  set position(pos: Position) {
+  public setPosition(pos: Position, transition: boolean): void {
     this.grid.remove(this);
 
     this.pos = pos;
-    this.element.setAttribute(
-      "style",
-      `--cell-y: ${pos.y}; --cell-x: ${pos.x}; --cell-x-mod-2: ${pos.x % 2};`
-    );
+
+    maybeTransition(transition, this.element, () => {
+      this.element.setAttribute(
+        "style",
+        `--cell-y: ${pos.y}; --cell-x: ${pos.x}; --cell-x-mod-2: ${pos.x % 2};`
+      );
+    });
 
     this.grid.add(this);
+  }
+
+  public get screenPosition() {
+    return {
+      top: this.element.offsetTop,
+      left: this.element.offsetLeft,
+      height: this.element.offsetHeight,
+      width: this.element.offsetWidth,
+    };
   }
 
   public neighbours(): Neighbours<Cell | undefined> {
