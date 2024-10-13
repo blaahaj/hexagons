@@ -3,11 +3,14 @@ import faceContentEffects from "./faceContent";
 import cellMoveEffects from "./cellMove";
 import coinTumbleEffects from "./coinTumble";
 import cellCompoundFunctions from "./compound";
+import type { CellTransformationFunction } from "./core";
 
-export default [
+const effects: readonly CellTransformationFunction[] = [
   ...faceColourEffects,
   ...faceContentEffects,
   ...coinTumbleEffects,
   ...cellMoveEffects,
   ...cellCompoundFunctions,
-] as const;
+];
+
+export default effects;

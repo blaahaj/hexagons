@@ -14,7 +14,7 @@ body.mirror {
   --hexagon-spacing: 1.06;
   --hex-short-radius: 3.3em;
   --hex-long-radius: calc(var(--hex-short-radius) / sin(60deg));
-  --duration: 3s;
+  --duration: 5s;
   --rx: 0deg;
   --ry: 0deg;
   --rz: 0deg;
@@ -33,7 +33,7 @@ body.mirror {
   right: calc(var(--hex-long-radius) * (var(--margin-radii) + 2));
 }
 
-.no-animate {
+.no-transition {
   transition-property: none !important;
 }
 

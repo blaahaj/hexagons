@@ -1,8 +1,8 @@
 import type { Cell } from "../../core/cell";
 
-export type CellTransformationFunction = (
-  cells: readonly Cell[]
-) => (cell: Cell) => void;
+export type CellMapper<T> = (cells: readonly Cell[]) => (cell: Cell) => T;
+
+export type CellTransformationFunction = CellMapper<void>;
 
 export const compound =
   (

@@ -96,7 +96,7 @@ export const transformIndependentMakeWonky: F = () => {
   };
 };
 
-export default [
+const effects: readonly CellTransformationFunction[] = [
   transformSingleRotateAll,
   transformSingleRotateAll,
   transformSingleRotateAll,
@@ -105,4 +105,6 @@ export default [
   transformSingleRotateZ,
   transformIndependentRotateAll,
   // transformIndependentMakeWonky,
-] as const;
+];
+
+export default effects;

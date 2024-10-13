@@ -7,8 +7,8 @@ import { Cell } from "./core/cell";
 import { Grid } from "./core/grid";
 import { Position } from "./core/position";
 
-const iterationInterval = 6000;
-const timingSpread = 1500;
+const iterationInterval = 10000;
+const timingSpread = 3000;
 
 const initGrid = (container: HTMLElement): Grid => {
   const grid = new Grid();

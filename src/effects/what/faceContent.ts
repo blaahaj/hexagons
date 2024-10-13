@@ -36,9 +36,11 @@ export const transformSymbolsFromWord: F = () => {
     (item.coin.visibleFace.parts.middle.text = randomElementFrom(symbols));
 };
 
-export default [
+const effects: readonly CellTransformationFunction[] = [
   transformSingleRandomSymbol,
   transformIndependentRandomSymbols,
   transformNRandomSymbols,
   transformSymbolsFromWord,
-] as const;
+];
+
+export default effects;
