@@ -99,6 +99,6 @@ body {
   position: absolute;
   left: 0;
   width: 100%;
-  transition-property: opacity;
+  transition-property: color opacity;
   transition-duration: var(--duration);
 }
