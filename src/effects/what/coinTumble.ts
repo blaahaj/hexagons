@@ -1,4 +1,4 @@
-import { type CellTransformationFunction } from "./index";
+import { type CellTransformationFunction } from "./core";
 import { Cell } from "../../core/cell";
 import { randomElementFrom } from "../../lib/randomThings";
 
@@ -9,7 +9,7 @@ export const transformSingleRotateAll: F = () => {
   const degY = randomElementFrom([0, 180]);
   const degZ = randomElementFrom([0, 60, 120, 180, 240]);
   return item => {
-    item.hexagon.rotateDegrees = { x: degX, y: degY, z: degZ };
+    item.coin.rotateDegrees = { x: degX, y: degY, z: degZ };
   };
 };
 
@@ -17,7 +17,7 @@ export const transformSingleRotateX: F = cells => {
   const seen: Record<string, number> = {};
 
   for (const cell of cells) {
-    const key = cell.hexagon.rotateDegrees.x.toString();
+    const key = cell.coin.rotateDegrees.x.toString();
     seen[key] = (seen[key] ?? 0) + 1;
   }
 
@@ -25,11 +25,11 @@ export const transformSingleRotateX: F = cells => {
 
   if (variants.length === 1) {
     // Currently all the same; to avoid a no-op, flip them all
-    const to = 180 - cells[0].hexagon.rotateDegrees.x;
+    const to = 180 - cells[0].coin.rotateDegrees.x;
 
     return item => {
-      item.hexagon.rotateDegrees = {
-        ...item.hexagon.rotateDegrees,
+      item.coin.rotateDegrees = {
+        ...item.coin.rotateDegrees,
         x: to,
       };
     };
@@ -42,16 +42,16 @@ export const transformSingleRotateX: F = cells => {
   if (Math.random() < 1 / 3) {
     // Flip, retaining wonkiness (if any)
     return item => {
-      item.hexagon.rotateDegrees = {
-        ...item.hexagon.rotateDegrees,
-        x: 180 - item.hexagon.rotateDegrees.x,
+      item.coin.rotateDegrees = {
+        ...item.coin.rotateDegrees,
+        x: 180 - item.coin.rotateDegrees.x,
       };
     };
   } else {
     const degX = randomElementFrom([0, 180]);
     return item => {
-      item.hexagon.rotateDegrees = {
-        ...item.hexagon.rotateDegrees,
+      item.coin.rotateDegrees = {
+        ...item.coin.rotateDegrees,
         x: degX,
       };
     };
@@ -61,8 +61,8 @@ export const transformSingleRotateX: F = cells => {
 export const transformSingleRotateY: F = () => {
   const degY = randomElementFrom([0, 180]);
   return item => {
-    item.hexagon.rotateDegrees = {
-      ...item.hexagon.rotateDegrees,
+    item.coin.rotateDegrees = {
+      ...item.coin.rotateDegrees,
       y: degY,
     };
   };
@@ -71,8 +71,8 @@ export const transformSingleRotateY: F = () => {
 export const transformSingleRotateZ: F = () => {
   const degZ = randomElementFrom([0, 60, 120, 180, 240]);
   return item => {
-    item.hexagon.rotateDegrees = {
-      ...item.hexagon.rotateDegrees,
+    item.coin.rotateDegrees = {
+      ...item.coin.rotateDegrees,
       z: degZ,
     };
   };
@@ -83,7 +83,7 @@ export const transformIndependentRotateAll: F = () => {
     const degX = randomElementFrom([0, 180]);
     const degY = randomElementFrom([0, 180]);
     const degZ = randomElementFrom([0, 60, 120, 180, 240]);
-    item.hexagon.rotateDegrees = { x: degX, y: degY, z: degZ };
+    item.coin.rotateDegrees = { x: degX, y: degY, z: degZ };
   };
 };
 
@@ -92,11 +92,11 @@ export const transformIndependentMakeWonky: F = () => {
     const degX = Math.random() * 10 - 5;
     const degY = Math.random() * 10 - 5;
     const degZ = Math.random() * 10 - 5;
-    item.hexagon.rotateDegrees = { x: degX, y: degY, z: degZ };
+    item.coin.rotateDegrees = { x: degX, y: degY, z: degZ };
   };
 };
 
-export default [
+const effects: readonly CellTransformationFunction[] = [
   transformSingleRotateAll,
   transformSingleRotateAll,
   transformSingleRotateAll,
@@ -105,4 +105,6 @@ export default [
   transformSingleRotateZ,
   transformIndependentRotateAll,
   // transformIndependentMakeWonky,
-] as const;
+];
+
+export default effects;

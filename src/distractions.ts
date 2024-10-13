@@ -1,14 +1,14 @@
 import { Coin } from "./core/coin";
 import { randomColorPair, randomElementFrom } from "./lib/randomThings";
 import normaliseRange from "./lib/normaliseRange";
-import cellTimingFunctions from "./effects/timing/cellTimingFunctions";
-import cellTransformationFunctions from "./effects/transforms/index";
+import cellTimingFunctions from "./effects/when/cellTimingFunctions";
+import cellTransformationFunctions from "./effects/what/index";
 import { Cell } from "./core/cell";
 import { Grid } from "./core/grid";
 import { Position } from "./core/position";
 
-const iterationInterval = 6000;
-const timingSpread = 1500;
+const iterationInterval = 10000;
+const timingSpread = 3000;
 
 const initGrid = (container: HTMLElement): Grid => {
   const grid = new Grid();
@@ -104,6 +104,11 @@ const check = () => {
 
     if (event.key === "g" && !timeout) {
       timeout = setInterval(iterate, iterationInterval);
+    }
+
+    if (event.key === "m") {
+      const list = document.body.classList;
+      list[list.contains("mirror") ? "remove" : "add"]("mirror");
     }
   });
 };

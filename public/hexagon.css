@@ -6,15 +6,18 @@ body {
   overflow: hidden;
 }
 
+body.mirror {
+  background: rgb(150, 80, 0) !important;
+}
+
 #hexagon-container {
   --hexagon-spacing: 1.06;
   --hex-short-radius: 3.3em;
   --hex-long-radius: calc(var(--hex-short-radius) / sin(60deg));
-  --duration: 3s;
+  --duration: 5s;
   --rx: 0deg;
   --ry: 0deg;
   --rz: 0deg;
-  --backface-rotation: 0deg;
   position: absolute;
 
   /* Ensure we have some hexagons off-screen, so that transitions
@@ -30,7 +33,7 @@ body {
   right: calc(var(--hex-long-radius) * (var(--margin-radii) + 2));
 }
 
-.no-animate {
+.no-transition {
   transition-property: none !important;
 }
 
@@ -47,7 +50,6 @@ body {
   transition-duration: var(--duration);
 }
 
-/* No special styling for .coin */
 .coin {
   position: relative;
 }
@@ -62,12 +64,22 @@ body {
   transition-property: background-color transform;
   transition-duration: var(--duration);
   transform: rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(var(--rz))
-    rotateX(var(--backface-rotation));
+    rotateX(var(--front-or-back-rotation));
 
   backface-visibility: hidden;
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.face.front,
+body.mirror .face.back {
+  --front-or-back-rotation: 0deg;
+}
+
+.face.back,
+body.mirror .face.front {
+  --front-or-back-rotation: 180deg;
 }
 
 .text {
@@ -99,6 +111,6 @@ body {
   position: absolute;
   left: 0;
   width: 100%;
-  transition-property: opacity;
+  transition-property: color opacity;
   transition-duration: var(--duration);
 }

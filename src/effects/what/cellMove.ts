@@ -6,7 +6,7 @@ import {
   NeighbourDirections,
   neighboursOfPosition,
 } from "../../core/neighbours";
-import type { CellTransformationFunction } from "./index";
+import type { CellTransformationFunction } from "./core";
 
 export const swapRandomPairsViaTranslate: CellTransformationFunction =
   cells => {
@@ -141,10 +141,10 @@ export const moveEverythingViaTranslate: CellTransformationFunction = cells => {
     if (!move) throw new Error("No move");
 
     if (!move.visible) {
-      cell.element.classList.add("no-animate");
+      cell.element.classList.add("no-transition");
       cell.position = move.newPosition;
       setTimeout(() => {
-        cell.element.classList.remove("no-animate");
+        cell.element.classList.remove("no-transition");
       }, 100);
     } else {
       cell.position = move.newPosition;
@@ -152,9 +152,11 @@ export const moveEverythingViaTranslate: CellTransformationFunction = cells => {
   };
 };
 
-export default [
+const effects: readonly CellTransformationFunction[] = [
   // swapRandomPairsViaTranslate,
   // swapNeighbourPairsViaTranslate,
   // swapNeighbourTriosViaTranslate,
   moveEverythingViaTranslate,
-] as const;
+];
+
+export default effects;

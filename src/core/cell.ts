@@ -8,12 +8,12 @@ export class Cell {
 
   constructor(
     private pos: Position,
-    public readonly hexagon: Coin,
+    public readonly coin: Coin,
     public readonly grid: Grid
   ) {
     const element = document.createElement("div");
     element.className = "cell";
-    element.appendChild(hexagon.element);
+    element.appendChild(coin.element);
 
     this.element = element;
     grid.add(this);

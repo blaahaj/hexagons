@@ -1,4 +1,4 @@
-import { CellTransformationFunction } from "./index";
+import { CellTransformationFunction } from "./core";
 import { Cell } from "../../core/cell";
 import { randomElementFrom, randomSymbol } from "../../lib/randomThings";
 import { generateRange } from "../../lib/generateRange";
@@ -7,18 +7,18 @@ type F = CellTransformationFunction;
 
 export const transformSingleRandomSymbol: F = () => {
   const symbol = randomSymbol();
-  return (item: Cell) => (item.hexagon.visibleFace.parts.middle.text = symbol);
+  return (item: Cell) => (item.coin.visibleFace.parts.middle.text = symbol);
 };
 
 export const transformIndependentRandomSymbols: F = () => item =>
-  (item.hexagon.visibleFace.parts.middle.text = randomSymbol());
+  (item.coin.visibleFace.parts.middle.text = randomSymbol());
 
 export const transformNRandomSymbols: F = () => {
   const symbols = [...generateRange(Math.random() * 6)].map(() =>
     randomSymbol()
   );
   return (item: Cell) => {
-    item.hexagon.visibleFace.parts.middle.text = randomElementFrom(symbols);
+    item.coin.visibleFace.parts.middle.text = randomElementFrom(symbols);
   };
 };
 
@@ -33,12 +33,14 @@ export const transformSymbolsFromWord: F = () => {
   ]);
   const symbols = word.split(/([A-Z][a-z]?)/g).filter(t => t !== "");
   return (item: Cell) =>
-    (item.hexagon.visibleFace.parts.middle.text = randomElementFrom(symbols));
+    (item.coin.visibleFace.parts.middle.text = randomElementFrom(symbols));
 };
 
-export default [
+const effects: readonly CellTransformationFunction[] = [
   transformSingleRandomSymbol,
   transformIndependentRandomSymbols,
   transformNRandomSymbols,
   transformSymbolsFromWord,
-] as const;
+];
+
+export default effects;
