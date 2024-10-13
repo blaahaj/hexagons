@@ -16,7 +16,8 @@ const initGrid = (container: HTMLElement): Grid => {
   let cellY = 0;
 
   for (;;) {
-    const coin = new Coin();
+    const { cell, element } = Cell.create(Position.at(cellX, cellY), grid);
+    const coin = cell.coin;
 
     for (const whichFace of ["frontFace", "backFace"] as const) {
       const face = coin[whichFace];
@@ -26,8 +27,6 @@ const initGrid = (container: HTMLElement): Grid => {
       face.parts.middle.text = randomElementFrom("HEXAGON".split(""));
       face.parts.middle.color = colors.fg;
     }
-
-    const { element } = Cell.create(Position.at(cellX, cellY), coin, grid);
 
     container.appendChild(element);
 

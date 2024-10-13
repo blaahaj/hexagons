@@ -10,10 +10,15 @@ export class Coin {
   public readonly frontFace: Face;
   public readonly backFace: Face;
 
-  public readonly element: HTMLDivElement;
+  protected readonly element: HTMLDivElement;
   private _rotateDegrees: RotateDegrees = { x: 0, y: 0, z: 0 };
 
-  constructor() {
+  public static create() {
+    const coin = new Coin();
+    return { coin, element: coin.element };
+  }
+
+  protected constructor() {
     this.frontFace = new Face(false);
     this.backFace = new Face(true);
 
