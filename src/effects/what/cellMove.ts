@@ -6,7 +6,7 @@ import {
   NeighbourDirections,
   neighboursOfPosition,
 } from "../../core/neighbours";
-import type { CellTransformationFunction } from "./index";
+import type { CellTransformationFunction } from "./core";
 
 export const swapRandomPairsViaTranslate: CellTransformationFunction =
   cells => {

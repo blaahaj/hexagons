@@ -1,7 +1,7 @@
 import { randomColorPair, randomElementFrom } from "../../lib/randomThings";
 import { schemes } from "../../lib/colorSchemes";
 import { generateRange } from "../../lib/generateRange";
-import { CellTransformationFunction } from "./index";
+import { CellTransformationFunction } from "./core";
 
 type F = CellTransformationFunction;
 

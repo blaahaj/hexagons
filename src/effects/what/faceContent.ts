@@ -1,4 +1,4 @@
-import { CellTransformationFunction } from "./index";
+import { CellTransformationFunction } from "./core";
 import { Cell } from "../../core/cell";
 import { randomElementFrom, randomSymbol } from "../../lib/randomThings";
 import { generateRange } from "../../lib/generateRange";

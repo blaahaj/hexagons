@@ -1,23 +1,8 @@
-import { Cell } from "../../core/cell";
-
-import * as col from "./color";
-import * as con from "./content";
-import * as rot from "./rotations";
-import { CellTransformationFunction } from "./index";
-import { moveEverythingViaTranslate } from "./move";
-
-type F = CellTransformationFunction;
-
-export const compound =
-  (...transformations: F[]): F =>
-  (cells: readonly Cell[]) => {
-    const fns = transformations.map(t => t(cells));
-    return item => {
-      fns.forEach(fn => {
-        fn(item);
-      });
-    };
-  };
+import * as col from "./faceColours";
+import * as con from "./faceContent";
+import * as rot from "./coinTumble";
+import { moveEverythingViaTranslate } from "./cellMove";
+import { compound } from "./core";
 
 export default [
   compound(col.transformMakeSingleRandomColor, rot.transformSingleRotateAll),

@@ -1,8 +1,8 @@
 import { Coin } from "./core/coin";
 import { randomColorPair, randomElementFrom } from "./lib/randomThings";
 import normaliseRange from "./lib/normaliseRange";
-import cellTimingFunctions from "./effects/timing/cellTimingFunctions";
-import cellTransformationFunctions from "./effects/transforms/index";
+import cellTimingFunctions from "./effects/when/cellTimingFunctions";
+import cellTransformationFunctions from "./effects/what/index";
 import { Cell } from "./core/cell";
 import { Grid } from "./core/grid";
 import { Position } from "./core/position";
