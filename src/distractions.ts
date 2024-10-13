@@ -105,6 +105,11 @@ const check = () => {
     if (event.key === "g" && !timeout) {
       timeout = setInterval(iterate, iterationInterval);
     }
+
+    if (event.key === "m") {
+      const list = document.body.classList;
+      list[list.contains("mirror") ? "remove" : "add"]("mirror");
+    }
   });
 };
 

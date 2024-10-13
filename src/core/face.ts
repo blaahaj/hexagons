@@ -63,10 +63,9 @@ export class Face {
       middle: new FaceText("middle"),
       bottom: new FaceText("bottom"),
     });
+
     const element = document.createElement("div");
-    element.setAttribute("class", "face");
-    if (this.isBackface)
-      element.setAttribute("style", "--backface-rotation: 180deg;");
+    element.setAttribute("class", `face ${isBackface ? "back" : "front"}`);
 
     element.appendChild(parts.top.element);
     element.appendChild(parts.middle.element);
