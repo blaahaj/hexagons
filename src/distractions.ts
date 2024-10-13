@@ -22,7 +22,7 @@ const initGrid = (container: HTMLElement): Grid => {
     for (const whichFace of ["frontFace", "backFace"] as const) {
       const face = coin[whichFace];
       const colors = randomColorPair();
-      face.color = colors.bg;
+      face.setColor(colors.bg, false);
       // hexagon.parts.top.text = `x=${cellX} y=${cellY}`;
       face.parts.middle.text = randomElementFrom("HEXAGON".split(""));
       face.parts.middle.color = colors.fg;

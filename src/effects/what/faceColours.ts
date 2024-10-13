@@ -20,12 +20,7 @@ export const setFaceAndContentColours =
     return cell => {
       const face = faceMap.get(cell);
       const colorPair = cellColourMapper(cell);
-
-      maybeTransition(
-        transition,
-        face!.element,
-        () => (face!.color = colorPair.bg)
-      );
+      face!.setColor(colorPair.bg, transition);
 
       // FIXME: the foreground colour always transitions (never immediate)
       maybeTransition(

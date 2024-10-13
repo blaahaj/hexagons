@@ -1,3 +1,5 @@
+import { maybeTransition } from "../lib/maybeTransition";
+
 export const TextPositions = ["top", "middle", "bottom"] as const;
 export type TextPosition = (typeof TextPositions)[number];
 
@@ -55,7 +57,12 @@ export class Face {
   };
 
   private readonly _color: string | undefined;
-  public readonly element: HTMLDivElement;
+  protected readonly element: HTMLDivElement;
+
+  public static create(isBackface: boolean) {
+    const face = new Face(isBackface);
+    return { face, element: face.element };
+  }
 
   constructor(private readonly isBackface: boolean) {
     const parts = (this.parts = {
@@ -78,7 +85,9 @@ export class Face {
     return this._color;
   }
 
-  set color(value: string | undefined) {
-    this.element.style.backgroundColor = value ?? "inherit";
+  public setColor(value: string | undefined, transition: boolean) {
+    maybeTransition(transition, this.element, () => {
+      this.element.style.backgroundColor = value ?? "inherit";
+    });
   }
 }

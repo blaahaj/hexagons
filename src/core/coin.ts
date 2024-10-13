@@ -19,13 +19,16 @@ export class Coin {
   }
 
   protected constructor() {
-    this.frontFace = new Face(false);
-    this.backFace = new Face(true);
+    const front = Face.create(false);
+    const back = Face.create(true);
+
+    this.frontFace = front.face;
+    this.backFace = back.face;
 
     const element = document.createElement("div");
     element.setAttribute("class", "coin");
-    element.appendChild(this.frontFace.element);
-    element.appendChild(this.backFace.element);
+    element.appendChild(front.element);
+    element.appendChild(back.element);
 
     this.element = element;
     this.rotateDegrees = { x: 0, y: 0, z: 0 };
