@@ -8,15 +8,15 @@ type F = CellTransformationFunction;
 export const transformMakeSingleRandomColor: F = () => {
   const colorPair = randomColorPair();
   return item => {
-    item.hexagon.visibleFace.color = colorPair.bg;
-    item.hexagon.visibleFace.parts.middle.color = colorPair.fg;
+    item.coin.visibleFace.color = colorPair.bg;
+    item.coin.visibleFace.parts.middle.color = colorPair.fg;
   };
 };
 
 export const transformIndependentRandomColors: F = () => item => {
   const colorPair = randomColorPair();
-  item.hexagon.visibleFace.color = colorPair.bg;
-  item.hexagon.visibleFace.parts.middle.color = colorPair.fg;
+  item.coin.visibleFace.color = colorPair.bg;
+  item.coin.visibleFace.parts.middle.color = colorPair.fg;
 };
 
 export const transformNRandomColors: F = () => {
@@ -25,8 +25,8 @@ export const transformNRandomColors: F = () => {
   );
   return item => {
     const colorPair = randomElementFrom(colorPairs);
-    item.hexagon.visibleFace.color = colorPair.bg;
-    item.hexagon.visibleFace.parts.middle.color = colorPair.fg;
+    item.coin.visibleFace.color = colorPair.bg;
+    item.coin.visibleFace.parts.middle.color = colorPair.fg;
   };
 };
 
@@ -62,7 +62,7 @@ export const transformToRandomColorScheme: F = () => {
   return item => {
     const n = Math.random() * totalWeight;
     const entry = entries.find(e => n >= e.start && n < e.end);
-    item.hexagon.visibleFace.color = entry!.color;
+    item.coin.visibleFace.color = entry!.color;
   };
 };
 
