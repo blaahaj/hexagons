@@ -20,7 +20,9 @@ export const setFaceAndContentColours =
       const face = faceMap.get(cell);
       const colorPair = cellColourMapper(cell);
       face!.setColor(colorPair.bg, transition);
+      face!.parts.top.setColor(colorPair.fg, transition);
       face!.parts.middle.setColor(colorPair.fg, transition);
+      face!.parts.bottom.setColor(colorPair.fg, transition);
     };
   };
 
