@@ -1,17 +1,12 @@
-export const randomSymbol = (() => {
-  const alphabet = "abcdefghijklmnopqrstuvwxyzæøå";
-  const randomLetterFrom = (s: string) =>
-    s[Math.floor(Math.random() * s.length)];
+import { chemicalElements } from "./chemicalElements";
 
+export const randomSymbol = (() => {
   return () => {
     const n = Math.random();
     if (n > 0.98) return "🪩";
     if (n > 0.96) return "⭐️";
     if (n > 0.94) return "🐝";
-    return (
-      randomLetterFrom(alphabet).toUpperCase() +
-      randomLetterFrom(alphabet + "  ").trim()
-    );
+    return randomElementFrom(chemicalElements).symbol;
   };
 })();
 
