@@ -84,12 +84,12 @@ export const flipAll =
   };
 
 const effects: readonly CellTransformationFunction[] = [
-  // transformSingleRotateAll,
-  // transformSingleRotateAll,
-  // transformSingleRotateAll,
-  // transformSingleRotateX,
-  // transformSingleRotateY,
-  // transformSingleRotateZ,
+  transformSingleRotateAll,
+  transformSingleRotateAll,
+  transformSingleRotateAll,
+  transformSingleRotateX,
+  transformSingleRotateY,
+  transformSingleRotateZ,
   transformIndependentRotateAll,
   flipAll("x", false),
   flipAll("y", false),
