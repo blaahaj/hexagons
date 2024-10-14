@@ -1,12 +1,16 @@
 import { chemicalElements } from "./chemicalElements";
 
 export const randomSymbol = (() => {
-  return () => {
+  return (): string | [string, string, string] => {
     const n = Math.random();
     if (n > 0.98) return "🪩";
     if (n > 0.96) return "⭐️";
     if (n > 0.94) return "🐝";
-    return randomElementFrom(chemicalElements).symbol;
+    const e = randomElementFrom(chemicalElements);
+    return randomElementFrom([
+      e.symbol,
+      [e.number.toString(), e.symbol, e.name],
+    ]);
   };
 })();
 

@@ -8,12 +8,19 @@ type F = CellTransformationFunction;
 export const transformSingleRandomSymbol: F = () => {
   const symbol = randomSymbol();
   return (item: Cell) => {
-    item.coin.visibleFace.parts.middle.setText(symbol, true);
+    const texts = typeof symbol === "string" ? ["", symbol, ""] : symbol;
+    item.coin.visibleFace.parts.top.setText(texts[0], true);
+    item.coin.visibleFace.parts.middle.setText(texts[1], true);
+    item.coin.visibleFace.parts.bottom.setText(texts[2], true);
   };
 };
 
 export const transformIndependentRandomSymbols: F = () => item => {
-  item.coin.visibleFace.parts.middle.setText(randomSymbol(), true);
+  const symbol = randomSymbol();
+  const texts = typeof symbol === "string" ? ["", symbol, ""] : symbol;
+  item.coin.visibleFace.parts.top.setText(texts[0], true);
+  item.coin.visibleFace.parts.middle.setText(texts[1], true);
+  item.coin.visibleFace.parts.bottom.setText(texts[2], true);
 };
 
 export const transformNRandomSymbols: F = () => {
@@ -21,10 +28,11 @@ export const transformNRandomSymbols: F = () => {
     randomSymbol()
   );
   return (item: Cell) => {
-    item.coin.visibleFace.parts.middle.setText(
-      randomElementFrom(symbols),
-      true
-    );
+    const symbol = randomElementFrom(symbols);
+    const texts = typeof symbol === "string" ? ["", symbol, ""] : symbol;
+    item.coin.visibleFace.parts.top.setText(texts[0], true);
+    item.coin.visibleFace.parts.middle.setText(texts[1], true);
+    item.coin.visibleFace.parts.bottom.setText(texts[2], true);
   };
 };
 
@@ -39,10 +47,12 @@ export const transformSymbolsFromWord: F = () => {
   ]);
   const symbols = word.split(/([A-Z][a-z]?)/g).filter(t => t !== "");
   return (item: Cell) => {
+    item.coin.visibleFace.parts.top.setText("", true);
     item.coin.visibleFace.parts.middle.setText(
       randomElementFrom(symbols),
       true
     );
+    item.coin.visibleFace.parts.bottom.setText("", true);
   };
 };
 

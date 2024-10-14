@@ -2,7 +2,9 @@ import { CellTransformationFunction, compound } from "./core";
 import { flipAll } from "./coinTumble";
 
 const fillWithBees: CellTransformationFunction = () => cell => {
+  cell.coin.hiddenFace.parts.top.setText("", false);
   cell.coin.hiddenFace.parts.middle.setText("🐝", false);
+  cell.coin.hiddenFace.parts.bottom.setText("", false);
 };
 
 const randomHoneyColor = () => {
