@@ -1,6 +1,6 @@
 import { Face } from "./face";
 
-interface RotateDegrees {
+export interface RotateDegrees {
   x: number;
   y: number;
   z: number;
@@ -10,48 +10,33 @@ export class Coin {
   public readonly frontFace: Face;
   public readonly backFace: Face;
 
-  protected readonly element: HTMLDivElement;
+  private readonly element: HTMLDivElement;
   private _rotateDegrees: RotateDegrees = { x: 0, y: 0, z: 0 };
 
-  public static create() {
-    const coin = new Coin();
-    return { coin, element: coin.element };
-  }
-
-  protected constructor() {
-    const front = Face.create(false);
-    const back = Face.create(true);
-
-    this.frontFace = front.face;
-    this.backFace = back.face;
-
+  constructor(appendTo: HTMLElement) {
     const element = document.createElement("div");
     element.setAttribute("class", "coin");
-    element.appendChild(front.element);
-    element.appendChild(back.element);
-
     this.element = element;
-    this.rotateDegrees = { x: 0, y: 0, z: 0 };
+
+    this.frontFace = new Face(false, element);
+    this.backFace = new Face(true, element);
+
+    this.setRotation({ x: 0, y: 0, z: 0 }, false);
+    appendTo.appendChild(this.element);
   }
 
   get rotateDegrees(): Readonly<RotateDegrees> {
     return this._rotateDegrees;
   }
 
-  set rotateDegrees(value: RotateDegrees) {
+  setRotation(value: RotateDegrees, transition: boolean) {
     this._rotateDegrees = {
       x: value.x,
       y: value.y,
       z: value.z,
     };
-    this.element.setAttribute(
-      "style",
-      `
-        --rx: ${this._rotateDegrees.x}deg;
-        --ry: ${this._rotateDegrees.y}deg;
-        --rz: ${this._rotateDegrees.z}deg;
-      `
-    );
+    this.frontFace.hackyRotateDegrees(value, transition);
+    this.backFace.hackyRotateDegrees(value, transition);
   }
 
   public get visibleFace(): Face {

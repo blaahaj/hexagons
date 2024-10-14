@@ -4,6 +4,7 @@ import cellMoveEffects from "./cellMove";
 import coinTumbleEffects from "./coinTumble";
 import cellCompoundFunctions from "./compound";
 import type { CellTransformationFunction } from "./core";
+import { suddenlyBees } from "./special";
 
 const effects: readonly CellTransformationFunction[] = [
   ...faceColourEffects,
@@ -11,6 +12,7 @@ const effects: readonly CellTransformationFunction[] = [
   ...coinTumbleEffects,
   ...cellMoveEffects,
   ...cellCompoundFunctions,
+  suddenlyBees,
 ];
 
 export default effects;

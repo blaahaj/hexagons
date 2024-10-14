@@ -1,5 +1,3 @@
-import { maybeTransition } from "../lib/maybeTransition";
-
 export const TextPositions = ["top", "middle", "bottom"] as const;
 export type TextPosition = (typeof TextPositions)[number];
 
@@ -33,8 +31,14 @@ export class Text {
     return this.texts[0].span.innerHTML;
   }
 
-  set text(value) {
+  setText(value: string, transition: boolean) {
     if (value === this.text) return;
+
+    if (!transition) {
+      this.texts[0].span.innerHTML = value;
+      return;
+    }
+
     this.texts.reverse();
     this.texts[0].span.innerHTML = value;
     this.texts[0].span.style.opacity = "1"; // fade in
@@ -46,8 +50,9 @@ export class Text {
   }
 
   setColor(value: string, transition: boolean) {
-    maybeTransition(transition, this.element, () => {
-      this.element.style.color = value;
-    });
+    this.element.style.transitionDuration = transition
+      ? "var(--duration)"
+      : "0s";
+    this.element.style.color = value;
   }
 }

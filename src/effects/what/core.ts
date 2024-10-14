@@ -10,9 +10,10 @@ export const compound =
   ): CellTransformationFunction =>
   (cells: readonly Cell[]) => {
     const fns = transformations.map(t => t(cells));
-    return item => {
+
+    return cell => {
       fns.forEach(fn => {
-        fn(item);
+        fn(cell);
       });
     };
   };
