@@ -21,10 +21,12 @@ export const randomColorPair = (() => {
       const fg = { r: r(), g: r(), b: r() };
       const bg = { r: r(), g: r(), b: r() };
       const distance = Math.sqrt(
-        (fg.r - bg.r) ** 2 * 4 + (fg.g - bg.g) * 2 + (fg.b - bg.b) ** 2 * 2
+        (fg.r - bg.r) ** 2 * 0.3 +
+          (fg.g - bg.g) ** 2 * 0.59 +
+          (fg.b - bg.b) ** 2 * 0.11
       );
 
-      if (distance < 400)
+      if (distance > 30)
         return {
           fg: `rgb(${fg.r}, ${fg.g}, ${fg.b})`,
           bg: `rgb(${bg.r}, ${bg.g}, ${bg.b})`,
