@@ -1,5 +1,5 @@
 import { Text } from "./text";
-import { maybeTransition } from "../lib/maybeTransition";
+import type { RotateDegrees } from "./coin";
 
 export class Face {
   public readonly parts: {
@@ -8,34 +8,57 @@ export class Face {
     bottom: Text;
   };
 
-  private readonly _color: string | undefined;
-  protected readonly element: HTMLDivElement;
+  private readonly _color: string = "inherit";
+  private readonly rotationElement: HTMLDivElement;
+  private readonly colorElement: HTMLDivElement;
 
-  public static create(isBackface: boolean) {
-    const face = new Face(isBackface);
-    return { face, element: face.element };
-  }
+  constructor(isBackface: boolean, appendTo: HTMLElement) {
+    this.rotationElement = document.createElement("div");
+    this.rotationElement.setAttribute(
+      "class",
+      `faceRotation ${isBackface ? "back" : "front"}`
+    );
 
-  constructor(private readonly isBackface: boolean) {
-    const element = document.createElement("div");
-    element.setAttribute("class", `face ${isBackface ? "back" : "front"}`);
+    this.colorElement = document.createElement("div");
+    this.colorElement.setAttribute(
+      "class",
+      `faceColor ${isBackface ? "back" : "front"}`
+    );
 
     this.parts = {
-      top: new Text("top", element),
-      middle: new Text("middle", element),
-      bottom: new Text("bottom", element),
+      top: new Text("top", this.colorElement),
+      middle: new Text("middle", this.colorElement),
+      bottom: new Text("bottom", this.colorElement),
     };
 
-    this.element = element;
+    this.rotationElement.appendChild(this.colorElement);
+    appendTo.appendChild(this.rotationElement);
   }
 
-  get color(): string | undefined {
+  get color(): string {
     return this._color;
   }
 
-  public setColor(value: string | undefined, transition: boolean) {
-    maybeTransition(transition, this.element, () => {
-      this.element.style.backgroundColor = value ?? "inherit";
-    });
+  public setColor(value: string, transition: boolean) {
+    const transitionDuration = transition ? "var(--duration)" : "0s";
+
+    this.colorElement.setAttribute(
+      "style",
+      `background-color: ${value}; transition-duration: ${transitionDuration};`
+    );
+  }
+
+  hackyRotateDegrees(value: RotateDegrees, transition: boolean) {
+    const transitionDuration = transition ? "var(--duration)" : "0s";
+
+    this.rotationElement.setAttribute(
+      "style",
+      `
+        --rx: ${value.x}deg;
+        --ry: ${value.y}deg;
+        --rz: ${value.z}deg;
+        transition-duration: ${transitionDuration};
+      `
+    );
   }
 }

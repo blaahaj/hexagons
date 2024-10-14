@@ -5,6 +5,7 @@ import nodePlugin from "eslint-plugin-n";
 import globals from "globals";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import unusedImports from "eslint-plugin-unused-imports";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -52,6 +53,14 @@ export default tsEslint.config(
       "n/prefer-node-protocol": "error",
       "@typescript-eslint/no-non-null-assertion": "off", // forbid foo!.bar
       "@typescript-eslint/restrict-template-expressions": "off", // forbid `${a_number}`
+    },
+  },
+  {
+    plugins: {
+      "unused-imports": unusedImports,
+    },
+    rules: {
+      "unused-imports/no-unused-imports": "error",
     },
   },
   {

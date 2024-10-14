@@ -1,4 +1,3 @@
-import { Coin } from "./core/coin";
 import { randomColorPair, randomElementFrom } from "./lib/randomThings";
 import normaliseRange from "./lib/normaliseRange";
 import cellTimingFunctions from "./effects/when/cellTimingFunctions";
@@ -24,7 +23,7 @@ const initGrid = (container: HTMLElement): Grid => {
       const colors = randomColorPair();
       face.setColor(colors.bg, false);
       // hexagon.parts.top.text = `x=${cellX} y=${cellY}`;
-      face.parts.middle.text = randomElementFrom("HEXAGON".split(""));
+      face.parts.middle.setText(randomElementFrom("HEXAGON".split("")), false);
       face.parts.middle.setColor(colors.fg, false);
     }
 

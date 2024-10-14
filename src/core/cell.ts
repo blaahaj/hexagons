@@ -2,11 +2,10 @@ import { Grid } from "./grid";
 import { Position } from "./position";
 import { Coin } from "./coin";
 import type { Neighbours } from "./neighbours";
-import { maybeTransition } from "../lib/maybeTransition";
 
 export class Cell {
   public readonly coin: Coin;
-  protected readonly element: HTMLDivElement;
+  private readonly element: HTMLDivElement;
 
   public static create(pos: Position, grid: Grid) {
     const cell = new Cell(pos, grid);
@@ -17,14 +16,11 @@ export class Cell {
     private pos: Position,
     public readonly grid: Grid
   ) {
-    const { coin, element: coinElement } = Coin.create();
-    this.coin = coin;
+    this.element = document.createElement("div");
+    this.element.className = "cell";
 
-    const element = document.createElement("div");
-    element.className = "cell";
-    element.appendChild(coinElement);
+    this.coin = new Coin(this.element);
 
-    this.element = element;
     grid.add(this);
     this.setPosition(pos, false);
   }
@@ -36,14 +32,13 @@ export class Cell {
   public setPosition(pos: Position, transition: boolean): void {
     this.grid.remove(this);
 
+    const transitionDuration = transition ? "var(--duration)" : "0s";
     this.pos = pos;
 
-    maybeTransition(transition, this.element, () => {
-      this.element.setAttribute(
-        "style",
-        `--cell-y: ${pos.y}; --cell-x: ${pos.x}; --cell-x-mod-2: ${pos.x % 2};`
-      );
-    });
+    this.element.setAttribute(
+      "style",
+      `--cell-y: ${pos.y}; --cell-x: ${pos.x}; --cell-x-mod-2: ${pos.x % 2}; transition-duration: ${transitionDuration};`
+    );
 
     this.grid.add(this);
   }
