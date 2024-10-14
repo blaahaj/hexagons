@@ -10,7 +10,6 @@ const effects: readonly CellTransformationFunction[] = [
     col.setFaceAndContentColours(singleRandomColor),
     rot.transformSingleRotateAll
   ),
-  // compound(con.transformSymbolsFromWord, rot.transformIndependentMakeWonky),
   compound(con.transformSymbolsFromWord, rot.transformSingleRotateX),
   compound(
     con.transformSymbolsFromWord,

@@ -34,7 +34,8 @@ body.mirror {
 }
 
 .no-transition {
-  transition-property: none !important;
+  /* transition-property: none !important; */
+  transition-duration: 0;
 }
 
 .cell {
@@ -46,7 +47,7 @@ body.mirror {
   left: calc(
     var(--hexagon-spacing) * var(--cell-x) * var(--hex-long-radius) * 1.5
   );
-  transition-property: all;
+  transition-property: top left;
   transition-duration: var(--duration);
 }
 
@@ -54,14 +55,9 @@ body.mirror {
   position: relative;
 }
 
-.face {
-  background: gray;
-  opacity: 1;
+.faceRotation {
   clip-path: polygon(0 50%, 25% 100%, 75% 100%, 100% 50%, 75% 0, 25% 0);
-  width: calc(var(--hex-long-radius) * 2);
-  height: calc(var(--hex-short-radius) * 2);
-
-  transition-property: background-color transform;
+  transition-property: transform;
   transition-duration: var(--duration);
   transform: rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(var(--rz))
     rotateX(var(--front-or-back-rotation));
@@ -72,14 +68,24 @@ body.mirror {
   left: 0;
 }
 
-.face.front,
-body.mirror .face.back {
+.faceRotation.front,
+body.mirror .faceRotation.back {
   --front-or-back-rotation: 0deg;
 }
 
-.face.back,
-body.mirror .face.front {
+.faceRotation.back,
+body.mirror .faceRotation.front {
   --front-or-back-rotation: 180deg;
+}
+
+.faceColor {
+  background: gray;
+  opacity: 1;
+  width: calc(var(--hex-long-radius) * 2);
+  height: calc(var(--hex-short-radius) * 2);
+
+  transition-property: background-color;
+  transition-duration: var(--duration);
 }
 
 .text {
@@ -87,6 +93,8 @@ body.mirror .face.front {
   line-height: 0;
   color: #fff;
   position: relative;
+  transition-property: color;
+  transition-duration: var(--duration);
 }
 
 .text.top {
@@ -111,6 +119,6 @@ body.mirror .face.front {
   position: absolute;
   left: 0;
   width: 100%;
-  transition-property: color opacity;
+  transition-property: opacity;
   transition-duration: var(--duration);
 }

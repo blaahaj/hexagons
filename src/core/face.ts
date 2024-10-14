@@ -1,84 +1,64 @@
-export const TextPositions = ["top", "middle", "bottom"] as const;
-export type TextPosition = (typeof TextPositions)[number];
-
-interface TextPart {
-  readonly span: HTMLSpanElement;
-  text: string;
-}
-
-export class FaceText {
-  public readonly element: HTMLDivElement;
-  private readonly texts: [TextPart, TextPart];
-
-  constructor(textPosition: TextPosition) {
-    this.element = document.createElement("div");
-    this.element.setAttribute("class", `text ${textPosition}`);
-    const makeText = () => {
-      const span = document.createElement("span");
-      span.classList.add("alternate");
-      const text = "";
-      span.innerHTML = text; // Initialize with empty HTML content
-      return { span, text };
-    };
-    this.texts = [makeText(), makeText()];
-    this.texts[0].span.style.opacity = "1";
-    this.texts[1].span.style.opacity = "0";
-    this.element.append(...this.texts.map(t => t.span));
-  }
-
-  get text() {
-    return this.texts[0].span.innerHTML;
-  }
-
-  set text(value) {
-    if (value === this.text) return;
-    this.texts.reverse();
-    this.texts[0].span.innerHTML = value;
-    this.texts[0].span.style.opacity = "1"; // fade in
-    this.texts[1].span.style.opacity = "0"; // fade out
-  }
-
-  get color() {
-    return this.element.style.color;
-  }
-
-  set color(value: string) {
-    this.element.style.color = value;
-  }
-}
+import { Text } from "./text";
+import type { RotateDegrees } from "./coin";
 
 export class Face {
   public readonly parts: {
-    top: FaceText;
-    middle: FaceText;
-    bottom: FaceText;
+    top: Text;
+    middle: Text;
+    bottom: Text;
   };
 
-  private readonly _color: string | undefined;
-  public readonly element: HTMLDivElement;
+  private readonly _color: string = "inherit";
+  private readonly rotationElement: HTMLDivElement;
+  private readonly colorElement: HTMLDivElement;
 
-  constructor(private readonly isBackface: boolean) {
-    const parts = (this.parts = {
-      top: new FaceText("top"),
-      middle: new FaceText("middle"),
-      bottom: new FaceText("bottom"),
-    });
+  constructor(isBackface: boolean, appendTo: HTMLElement) {
+    this.rotationElement = document.createElement("div");
+    this.rotationElement.setAttribute(
+      "class",
+      `faceRotation ${isBackface ? "back" : "front"}`
+    );
 
-    const element = document.createElement("div");
-    element.setAttribute("class", `face ${isBackface ? "back" : "front"}`);
+    this.colorElement = document.createElement("div");
+    this.colorElement.setAttribute(
+      "class",
+      `faceColor ${isBackface ? "back" : "front"}`
+    );
 
-    element.appendChild(parts.top.element);
-    element.appendChild(parts.middle.element);
-    element.appendChild(parts.bottom.element);
+    this.parts = {
+      top: new Text("top", this.colorElement),
+      middle: new Text("middle", this.colorElement),
+      bottom: new Text("bottom", this.colorElement),
+    };
 
-    this.element = element;
+    this.rotationElement.appendChild(this.colorElement);
+    appendTo.appendChild(this.rotationElement);
   }
 
-  get color(): string | undefined {
+  get color(): string {
     return this._color;
   }
 
-  set color(value: string | undefined) {
-    this.element.style.backgroundColor = value ?? "inherit";
+  public setColor(value: string, transition: boolean) {
+    const transitionDuration = transition ? "var(--duration)" : "0s";
+
+    this.colorElement.setAttribute(
+      "style",
+      `background-color: ${value}; transition-duration: ${transitionDuration};`
+    );
+  }
+
+  hackyRotateDegrees(value: RotateDegrees, transition: boolean) {
+    const transitionDuration = transition ? "var(--duration)" : "0s";
+
+    this.rotationElement.setAttribute(
+      "style",
+      `
+        --rx: ${value.x}deg;
+        --ry: ${value.y}deg;
+        --rz: ${value.z}deg;
+        transition-duration: ${transitionDuration};
+      `
+    );
   }
 }

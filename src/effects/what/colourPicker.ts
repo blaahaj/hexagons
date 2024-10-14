@@ -59,3 +59,10 @@ export const fromColorScheme: ColourFunction = () => {
     };
   };
 };
+
+export const pickers = [
+  singleRandomColor,
+  independentRandomColors,
+  nRandomColors,
+  fromColorScheme,
+];

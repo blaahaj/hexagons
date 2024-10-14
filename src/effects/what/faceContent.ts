@@ -7,18 +7,24 @@ type F = CellTransformationFunction;
 
 export const transformSingleRandomSymbol: F = () => {
   const symbol = randomSymbol();
-  return (item: Cell) => (item.coin.visibleFace.parts.middle.text = symbol);
+  return (item: Cell) => {
+    item.coin.visibleFace.parts.middle.setText(symbol, true);
+  };
 };
 
-export const transformIndependentRandomSymbols: F = () => item =>
-  (item.coin.visibleFace.parts.middle.text = randomSymbol());
+export const transformIndependentRandomSymbols: F = () => item => {
+  item.coin.visibleFace.parts.middle.setText(randomSymbol(), true);
+};
 
 export const transformNRandomSymbols: F = () => {
   const symbols = [...generateRange(Math.random() * 6)].map(() =>
     randomSymbol()
   );
   return (item: Cell) => {
-    item.coin.visibleFace.parts.middle.text = randomElementFrom(symbols);
+    item.coin.visibleFace.parts.middle.setText(
+      randomElementFrom(symbols),
+      true
+    );
   };
 };
 
@@ -32,8 +38,12 @@ export const transformSymbolsFromWord: F = () => {
     "HeXAgON",
   ]);
   const symbols = word.split(/([A-Z][a-z]?)/g).filter(t => t !== "");
-  return (item: Cell) =>
-    (item.coin.visibleFace.parts.middle.text = randomElementFrom(symbols));
+  return (item: Cell) => {
+    item.coin.visibleFace.parts.middle.setText(
+      randomElementFrom(symbols),
+      true
+    );
+  };
 };
 
 const effects: readonly CellTransformationFunction[] = [

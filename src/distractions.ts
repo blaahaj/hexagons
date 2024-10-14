@@ -1,4 +1,3 @@
-import { Coin } from "./core/coin";
 import { randomColorPair, randomElementFrom } from "./lib/randomThings";
 import normaliseRange from "./lib/normaliseRange";
 import cellTimingFunctions from "./effects/when/cellTimingFunctions";
@@ -16,28 +15,27 @@ const initGrid = (container: HTMLElement): Grid => {
   let cellY = 0;
 
   for (;;) {
-    const coin = new Coin();
+    const { cell, element } = Cell.create(Position.at(cellX, cellY), grid);
+    const coin = cell.coin;
 
     for (const whichFace of ["frontFace", "backFace"] as const) {
       const face = coin[whichFace];
       const colors = randomColorPair();
-      face.color = colors.bg;
+      face.setColor(colors.bg, false);
       // hexagon.parts.top.text = `x=${cellX} y=${cellY}`;
-      face.parts.middle.text = randomElementFrom("HEXAGON".split(""));
-      face.parts.middle.color = colors.fg;
+      face.parts.middle.setText(randomElementFrom("HEXAGON".split("")), false);
+      face.parts.middle.setColor(colors.fg, false);
     }
 
-    const cell = new Cell(Position.at(cellX, cellY), coin, grid);
-
-    container.appendChild(cell.element);
+    container.appendChild(element);
 
     if (
-      cell.element.offsetLeft + cell.element.offsetWidth >
-      cell.element.parentElement!.clientWidth
+      element.offsetLeft + element.offsetWidth >
+      element.parentElement!.clientWidth
     ) {
       if (
-        cell.element.offsetTop + cell.element.offsetHeight >
-        cell.element.parentElement!.clientHeight
+        element.offsetTop + element.offsetHeight >
+        element.parentElement!.clientHeight
       )
         break;
 
