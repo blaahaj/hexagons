@@ -42,7 +42,8 @@ export const timingWipeCentreLine: CellTimingFunction = () => {
   const isUpAndDown = randomElementFrom([true, false]);
   const direction = randomElementFrom([+1, -1]);
 
-  const half = document.body[isUpAndDown ? "clientHeight" : "clientWidth"] / 2;
+  const container = document.getElementById("hexagon-container")!;
+  const half = container[isUpAndDown ? "clientHeight" : "clientWidth"] / 2;
 
   return item => {
     const pos = item.screenPosition;

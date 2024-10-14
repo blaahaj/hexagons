@@ -25,7 +25,7 @@ const initGrid = (container: HTMLElement): Grid => {
       face.setColor(colors.bg, false);
       // hexagon.parts.top.text = `x=${cellX} y=${cellY}`;
       face.parts.middle.text = randomElementFrom("HEXAGON".split(""));
-      face.parts.middle.color = colors.fg;
+      face.parts.middle.setColor(colors.fg, false);
     }
 
     container.appendChild(element);

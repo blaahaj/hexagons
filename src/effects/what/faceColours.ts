@@ -1,5 +1,4 @@
 import { CellTransformationFunction } from "./core";
-import { maybeTransition } from "../../lib/maybeTransition";
 import { type ColourFunction } from "./colourPicker";
 import * as picker from "./colourPicker";
 
@@ -21,13 +20,7 @@ export const setFaceAndContentColours =
       const face = faceMap.get(cell);
       const colorPair = cellColourMapper(cell);
       face!.setColor(colorPair.bg, transition);
-
-      // FIXME: the foreground colour always transitions (never immediate)
-      maybeTransition(
-        transition,
-        face!.parts.middle.element,
-        () => (face!.parts.middle.color = colorPair.fg)
-      );
+      face!.parts.middle.setColor(colorPair.fg, transition);
     };
   };
 

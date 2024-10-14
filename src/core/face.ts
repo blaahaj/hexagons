@@ -17,18 +17,14 @@ export class Face {
   }
 
   constructor(private readonly isBackface: boolean) {
-    const parts = (this.parts = {
-      top: new Text("top"),
-      middle: new Text("middle"),
-      bottom: new Text("bottom"),
-    });
-
     const element = document.createElement("div");
     element.setAttribute("class", `face ${isBackface ? "back" : "front"}`);
 
-    element.appendChild(parts.top.element);
-    element.appendChild(parts.middle.element);
-    element.appendChild(parts.bottom.element);
+    this.parts = {
+      top: new Text("top", element),
+      middle: new Text("middle", element),
+      bottom: new Text("bottom", element),
+    };
 
     this.element = element;
   }

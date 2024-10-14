@@ -87,6 +87,8 @@ body.mirror .face.front {
   line-height: 0;
   color: #fff;
   position: relative;
+  transition-property: color;
+  transition-duration: var(--duration);
 }
 
 .text.top {
@@ -111,6 +113,6 @@ body.mirror .face.front {
   position: absolute;
   left: 0;
   width: 100%;
-  transition-property: color opacity;
+  transition-property: opacity;
   transition-duration: var(--duration);
 }
