@@ -50,6 +50,12 @@ const initGrid = (container: HTMLElement): Grid => {
 
   grid.boundary = Position.at(cellX, cellY);
 
+  Object.defineProperty(window, "__grid", {
+    value: grid,
+    enumerable: true,
+    configurable: false,
+  });
+
   return grid;
 };
 

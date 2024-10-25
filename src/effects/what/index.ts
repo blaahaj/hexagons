@@ -7,12 +7,12 @@ import type { CellTransformationFunction } from "./core";
 import { suddenlyBees } from "./special";
 
 const effects: readonly CellTransformationFunction[] = [
-  ...faceColourEffects,
-  ...faceContentEffects,
+  // ...faceColourEffects,
+  // ...faceContentEffects,
   ...coinTumbleEffects,
-  ...cellMoveEffects,
-  ...cellCompoundFunctions,
-  suddenlyBees,
+  // ...cellMoveEffects,
+  // ...cellCompoundFunctions,
+  // suddenlyBees,
 ];
 
 export default effects;

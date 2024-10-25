@@ -15,10 +15,10 @@ body.mirror {
   --hex-short-radius: 3.3em;
   --hex-long-radius: calc(var(--hex-short-radius) / sin(60deg));
   --duration: 5s;
-  --rx: 0deg;
-  --ry: 0deg;
-  --rz: 0deg;
   position: absolute;
+  transition-duration: 3s;
+  transition-property: transform;
+  transform: rotateY(0deg);
 
   /* Ensure we have some hexagons off-screen, so that transitions
   ** which move hexagons don't visibly hit the edge of the animatable
@@ -33,60 +33,47 @@ body.mirror {
   right: calc(var(--hex-long-radius) * (var(--margin-radii) + 2));
 }
 
-.no-transition {
-  /* transition-property: none !important; */
-  transition-duration: 0;
-}
+/**************************************/
 
 .cell {
   position: absolute;
-  top: calc(
-    var(--hexagon-spacing) * (2 * var(--cell-y) + var(--cell-x-mod-2)) *
-      var(--hex-short-radius)
-  );
-  left: calc(
-    var(--hexagon-spacing) * var(--cell-x) * var(--hex-long-radius) * 1.5
-  );
-  transition-property: top left;
+  transition-property: top left transform;
   transition-duration: var(--duration);
+  transform-style: preserve-3d;
 }
 
 .coin {
   position: relative;
+  transform-origin: var(--hex-long-radius) var(--hex-short-radius);
+  transform-style: preserve-3d;
 }
 
-.faceRotation {
-  clip-path: polygon(0 50%, 25% 100%, 75% 100%, 100% 50%, 75% 0, 25% 0);
-  transition-property: transform;
-  transition-duration: var(--duration);
-  transform: rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(var(--rz))
-    rotateX(var(--front-or-back-rotation));
+/**************************************/
 
-  backface-visibility: hidden;
+.frontFace,
+.backFace {
   position: absolute;
   top: 0;
   left: 0;
-}
-
-.faceRotation.front,
-body.mirror .faceRotation.back {
-  --front-or-back-rotation: 0deg;
-}
-
-.faceRotation.back,
-body.mirror .faceRotation.front {
-  --front-or-back-rotation: 180deg;
-}
-
-.faceColor {
-  background: gray;
-  opacity: 1;
+  clip-path: polygon(0 50%, 25% 100%, 75% 100%, 100% 50%, 75% 0, 25% 0);
   width: calc(var(--hex-long-radius) * 2);
   height: calc(var(--hex-short-radius) * 2);
-
   transition-property: background-color;
-  transition-duration: var(--duration);
 }
+
+body .frontFace,
+body.mirror .backFace {
+  transform: none;
+}
+
+body .backFace,
+body.mirror .frontFace {
+  transform: translateZ(0.1px);
+}
+
+/*
+** Text
+*/
 
 .text {
   text-align: center;

@@ -35,8 +35,20 @@ export class Coin {
       y: value.y,
       z: value.z,
     };
-    this.frontFace.hackyRotateDegrees(value, transition);
-    this.backFace.hackyRotateDegrees(value, transition);
+
+    const transform = [
+      "translate3d(50%, 50%, 0)",
+      `rotateX(${value.x}deg)`,
+      `rotateY(${value.y}deg)`,
+      `rotateZ(${value.z}deg)`,
+      "translate3d(50%, 50%, 0)",
+    ].join(" ");
+    const transitionDuration = transition ? "var(--duration)" : "0s";
+
+    this.element.setAttribute(
+      "style",
+      `transform: ${transform}; transition-duration: ${transitionDuration};`
+    );
   }
 
   public get visibleFace(): Face {
