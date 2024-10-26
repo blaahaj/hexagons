@@ -11,12 +11,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default tsEslint.config(
   {
-    ignores: [
-      "dist/*",
-      "eslint.config.mjs",
-      "public/js/main.js",
-      "public/windfall.js",
-    ],
+    ignores: ["dist/*", "eslint.config.mjs", "public/js/main.js"],
   },
   js.configs.recommended,
 

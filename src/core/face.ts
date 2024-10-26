@@ -1,5 +1,4 @@
 import { Text } from "./text";
-import type { RotateDegrees } from "./coin";
 
 export class Face {
   public readonly parts: {
@@ -9,30 +8,19 @@ export class Face {
   };
 
   private readonly _color: string = "inherit";
-  private readonly rotationElement: HTMLDivElement;
-  private readonly colorElement: HTMLDivElement;
+  private readonly element: HTMLDivElement;
 
   constructor(isBackface: boolean, appendTo: HTMLElement) {
-    this.rotationElement = document.createElement("div");
-    this.rotationElement.setAttribute(
-      "class",
-      `faceRotation ${isBackface ? "back" : "front"}`
-    );
-
-    this.colorElement = document.createElement("div");
-    this.colorElement.setAttribute(
-      "class",
-      `faceColor ${isBackface ? "back" : "front"}`
-    );
+    this.element = document.createElement("div");
+    this.element.setAttribute("class", isBackface ? "backFace" : "frontFace");
 
     this.parts = {
-      top: new Text("top", this.colorElement),
-      middle: new Text("middle", this.colorElement),
-      bottom: new Text("bottom", this.colorElement),
+      top: new Text("top", this.element),
+      middle: new Text("middle", this.element),
+      bottom: new Text("bottom", this.element),
     };
 
-    this.rotationElement.appendChild(this.colorElement);
-    appendTo.appendChild(this.rotationElement);
+    appendTo.appendChild(this.element);
   }
 
   get color(): string {
@@ -42,23 +30,7 @@ export class Face {
   public setColor(value: string, transition: boolean) {
     const transitionDuration = transition ? "var(--duration)" : "0s";
 
-    this.colorElement.setAttribute(
-      "style",
-      `background-color: ${value}; transition-duration: ${transitionDuration};`
-    );
-  }
-
-  hackyRotateDegrees(value: RotateDegrees, transition: boolean) {
-    const transitionDuration = transition ? "var(--duration)" : "0s";
-
-    this.rotationElement.setAttribute(
-      "style",
-      `
-        --rx: ${value.x}deg;
-        --ry: ${value.y}deg;
-        --rz: ${value.z}deg;
-        transition-duration: ${transitionDuration};
-      `
-    );
+    this.element.style.backgroundColor = value;
+    this.element.style.transitionDuration = transitionDuration;
   }
 }
