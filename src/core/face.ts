@@ -30,9 +30,7 @@ export class Face {
   public setColor(value: string, transition: boolean) {
     const transitionDuration = transition ? "var(--duration)" : "0s";
 
-    this.element.setAttribute(
-      "style",
-      `background-color: ${value}; transition-duration: ${transitionDuration};`
-    );
+    this.element.style.backgroundColor = value;
+    this.element.style.transitionDuration = transitionDuration;
   }
 }
