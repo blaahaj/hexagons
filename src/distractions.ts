@@ -46,6 +46,8 @@ const initGrid = (container: HTMLElement): Grid => {
     } else {
       ++cellX;
     }
+
+    if (container.childElementCount > 1000) break;
   }
 
   grid.boundary = Position.at(cellX, cellY);
