@@ -219,11 +219,85 @@ export const moveEverythingViaFlip: CellTransformationFunction = cells => {
   };
 };
 
+export const moveEverythingViaSpin: CellTransformationFunction = cells => {
+  const directionNumber = Math.floor(Math.random() * 6);
+  const direction = NeighbourDirections[directionNumber];
+  const moves: { cell: Cell; newPosition: Position; visible: boolean }[] = [];
+  const boundary = cells[0].grid.boundary;
+  const homeless: Cell[] = [];
+  const unfilled = cells.map(cell => cell.position);
+
+  for (const cell of cells) {
+    const to = neighboursOfPosition(cell.position)[direction];
+
+    if (to.x >= 0 && to.y >= 0 && to.x <= boundary!.x && to.y <= boundary!.y) {
+      moves.push({ cell, newPosition: to, visible: true });
+      const idx = unfilled.findIndex(pos => pos.toKey() === to.toKey());
+      if (idx >= 0) unfilled.splice(idx, 1);
+    } else {
+      homeless.push(cell);
+    }
+  }
+
+  if (homeless.length != unfilled.length) throw new Error("Mismatch");
+
+  for (const [idx, cell] of homeless.entries()) {
+    const to = unfilled[idx];
+    moves.push({ cell, newPosition: to, visible: false });
+  }
+
+  const sign = randomElementFrom([-1, +1]);
+
+  return cell => {
+    const move = moves.find(m => m.cell === cell);
+    if (!move) throw new Error("No move");
+
+    const orig = move.cell.geometry;
+
+    const finalGeometry: CellGeometry = {
+      ...orig,
+      positionAndMovement: {
+        movement: {
+          spin: undefined,
+          flip: undefined,
+        },
+        position: move.newPosition,
+      },
+      instantOrientation: {
+        ...orig.instantOrientation,
+        zeroPosition:
+          (orig.instantOrientation.zeroPosition + 12 + 4 * sign) % 12,
+      },
+    };
+
+    const intermediaGeometry: CellGeometry = {
+      ...finalGeometry,
+      positionAndMovement: {
+        ...finalGeometry.positionAndMovement,
+        movement: {
+          spin: {
+            around: (directionNumber * 2 + 6 - sign) % 12,
+            degrees: -120 * sign,
+          },
+          flip: undefined,
+        },
+      },
+    };
+
+    move.cell.setGeometry(intermediaGeometry, false);
+
+    setTimeout(() => {
+      move.cell.setGeometry(finalGeometry, true);
+    }, 50);
+  };
+};
+
 const effects: readonly CellTransformationFunction[] = [
   // swapNeighbourPairsViaTranslate,
   // swapNeighbourTriosViaTranslate,
   moveEverythingViaTranslate,
   moveEverythingViaFlip,
+  moveEverythingViaSpin,
 ];
 
 export default effects;
