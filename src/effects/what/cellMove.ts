@@ -8,30 +8,6 @@ import {
 } from "../../core/neighbours";
 import type { CellTransformationFunction } from "./core";
 
-export const swapRandomPairsViaTranslate: CellTransformationFunction =
-  cells => {
-    const copy = [...cells];
-    const moves: { cell: Cell; newPosition: Position }[] = [];
-
-    while (copy.length > cells.length * 0.9 && copy.length >= 2) {
-      let n = Math.floor(Math.random() * copy.length);
-      const c0 = copy.splice(n, 1)[0];
-
-      n = Math.floor(Math.random() * copy.length);
-      const c1 = copy.splice(n, 1)[0];
-
-      moves.push({ cell: c0, newPosition: c1.position });
-      moves.push({ cell: c1, newPosition: c0.position });
-    }
-
-    return cell => {
-      const move = moves.find(m => m.cell === cell);
-      if (move === undefined) return;
-
-      move.cell.setPosition(move.newPosition, true);
-    };
-  };
-
 export const swapNeighbourPairsViaTranslate: CellTransformationFunction =
   cells => {
     const copy = [...cells];
@@ -244,7 +220,6 @@ export const moveEverythingViaFlip: CellTransformationFunction = cells => {
 };
 
 const effects: readonly CellTransformationFunction[] = [
-  // swapRandomPairsViaTranslate,
   // swapNeighbourPairsViaTranslate,
   // swapNeighbourTriosViaTranslate,
   moveEverythingViaTranslate,
