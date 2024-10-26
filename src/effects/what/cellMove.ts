@@ -1,4 +1,9 @@
-import { Cell, type CellGeometry } from "../../core/cell";
+import {
+  Cell,
+  type CellGeometry,
+  type CellMovement,
+  type Orientation,
+} from "../../core/cell";
 import { Position } from "../../core/position";
 import { randomElementFrom } from "../../lib/randomThings";
 import {
@@ -105,30 +110,8 @@ export const swapNeighbourTriosViaTranslate: CellTransformationFunction =
   };
 
 export const moveEverythingViaTranslate: CellTransformationFunction = cells => {
-  const direction = randomElementFrom(NeighbourDirections);
-  const moves: { cell: Cell; newPosition: Position; visible: boolean }[] = [];
-  const boundary = cells[0].grid.boundary;
-  const homeless: Cell[] = [];
-  const unfilled = cells.map(cell => cell.position);
-
-  for (const cell of cells) {
-    const to = neighboursOfPosition(cell.position)[direction];
-
-    if (to.x >= 0 && to.y >= 0 && to.x <= boundary!.x && to.y <= boundary!.y) {
-      moves.push({ cell, newPosition: to, visible: true });
-      const idx = unfilled.findIndex(pos => pos.toKey() === to.toKey());
-      if (idx >= 0) unfilled.splice(idx, 1);
-    } else {
-      homeless.push(cell);
-    }
-  }
-
-  if (homeless.length != unfilled.length) throw new Error("Mismatch");
-
-  for (const [idx, cell] of homeless.entries()) {
-    const to = unfilled[idx];
-    moves.push({ cell, newPosition: to, visible: false });
-  }
+  const directionNumber = Math.floor(Math.random() * 6);
+  const moves = prepareMoves(cells, NeighbourDirections[directionNumber]);
 
   return cell => {
     const move = moves.find(m => m.cell === cell);
@@ -149,80 +132,104 @@ export const moveEverythingViaTranslate: CellTransformationFunction = cells => {
 
 export const moveEverythingViaFlip: CellTransformationFunction = cells => {
   const directionNumber = Math.floor(Math.random() * 6);
-  const direction = NeighbourDirections[directionNumber];
-  const moves: { cell: Cell; newPosition: Position; visible: boolean }[] = [];
-  const boundary = cells[0].grid.boundary;
-  const homeless: Cell[] = [];
-  const unfilled = cells.map(cell => cell.position);
-
-  for (const cell of cells) {
-    const to = neighboursOfPosition(cell.position)[direction];
-
-    if (to.x >= 0 && to.y >= 0 && to.x <= boundary!.x && to.y <= boundary!.y) {
-      moves.push({ cell, newPosition: to, visible: true });
-      const idx = unfilled.findIndex(pos => pos.toKey() === to.toKey());
-      if (idx >= 0) unfilled.splice(idx, 1);
-    } else {
-      homeless.push(cell);
-    }
-  }
-
-  if (homeless.length != unfilled.length) throw new Error("Mismatch");
-
-  for (const [idx, cell] of homeless.entries()) {
-    const to = unfilled[idx];
-    moves.push({ cell, newPosition: to, visible: false });
-  }
+  const moves = prepareMoves(cells, NeighbourDirections[directionNumber]);
 
   return cell => {
     const move = moves.find(m => m.cell === cell);
     if (!move) throw new Error("No move");
 
-    const orig = move.cell.geometry;
-
-    const tmpGeometry: CellGeometry = {
-      ...orig,
-      positionAndMovement: {
-        position: move.newPosition,
-        movement: {
-          spin: undefined,
-          flip: { around: directionNumber * 2 + 6 },
-        },
-      },
-      instantOrientation: {
+    moveViaIntermediateGeometry2(
+      cell,
+      move.newPosition,
+      {
         zeroPosition:
           (0 +
             2 * (directionNumber * 2 + 3) -
-            orig.instantOrientation.zeroPosition) %
+            cell.geometry.instantOrientation.zeroPosition) %
           12,
-        reversed: !orig.instantOrientation.reversed,
+        reversed: !cell.geometry.instantOrientation.reversed,
       },
-    };
-
-    move.cell.setGeometry(tmpGeometry, false);
-
-    setTimeout(() => {
-      move.cell.setGeometry(
-        {
-          ...tmpGeometry,
-          positionAndMovement: {
-            ...tmpGeometry.positionAndMovement,
-            movement: {
-              spin: undefined,
-              flip: undefined,
-            },
-          },
-        },
-        true
-      );
-    }, 50);
+      {
+        spin: undefined,
+        flip: { around: directionNumber * 2 + 6 },
+      },
+      move.visible
+    );
   };
 };
 
 export const moveEverythingViaSpin: CellTransformationFunction = cells => {
   const directionNumber = Math.floor(Math.random() * 6);
-  const direction = NeighbourDirections[directionNumber];
-  const moves: { cell: Cell; newPosition: Position; visible: boolean }[] = [];
+  const sign = randomElementFrom([-1, +1]);
+  const moves = prepareMoves(cells, NeighbourDirections[directionNumber]);
+
+  return cell => {
+    const move = moves.find(m => m.cell === cell);
+    if (!move) throw new Error("No move");
+
+    moveViaIntermediateGeometry2(
+      cell,
+      move.newPosition,
+      {
+        ...cell.geometry.instantOrientation,
+        zeroPosition:
+          (cell.geometry.instantOrientation.zeroPosition + 12 + 4 * sign) % 12,
+      },
+      {
+        spin: {
+          around: (directionNumber * 2 + 6 - sign) % 12,
+          degrees: -120 * sign,
+        },
+        flip: undefined,
+      },
+      move.visible
+    );
+  };
+};
+
+const moveViaIntermediateGeometry2 = (
+  cell: Cell,
+  newPosition: Position,
+  newOrientation: Orientation,
+  viaMovement: CellMovement,
+  transition: boolean
+) => {
+  const [intermediate, final] = [
+    viaMovement,
+    { spin: undefined, flip: undefined },
+  ].map(
+    (movement: CellMovement): CellGeometry => ({
+      ...cell.geometry,
+      positionAndMovement: {
+        position: newPosition,
+        movement,
+      },
+      instantOrientation: newOrientation,
+    })
+  );
+
+  if (transition) {
+    cell.setGeometry(intermediate, false);
+
+    setTimeout(() => {
+      cell.setGeometry(final, true);
+    }, 50);
+  } else {
+    cell.setGeometry(final, false);
+  }
+};
+
+interface Move {
+  cell: Cell;
+  newPosition: Position;
+  visible: boolean;
+}
+
+const prepareMoves = (
+  cells: readonly Cell[],
+  direction: NeighbourDirections
+): Move[] => {
+  const moves: Move[] = [];
   const boundary = cells[0].grid.boundary;
   const homeless: Cell[] = [];
   const unfilled = cells.map(cell => cell.position);
@@ -246,50 +253,7 @@ export const moveEverythingViaSpin: CellTransformationFunction = cells => {
     moves.push({ cell, newPosition: to, visible: false });
   }
 
-  const sign = randomElementFrom([-1, +1]);
-
-  return cell => {
-    const move = moves.find(m => m.cell === cell);
-    if (!move) throw new Error("No move");
-
-    const orig = move.cell.geometry;
-
-    const finalGeometry: CellGeometry = {
-      ...orig,
-      positionAndMovement: {
-        movement: {
-          spin: undefined,
-          flip: undefined,
-        },
-        position: move.newPosition,
-      },
-      instantOrientation: {
-        ...orig.instantOrientation,
-        zeroPosition:
-          (orig.instantOrientation.zeroPosition + 12 + 4 * sign) % 12,
-      },
-    };
-
-    const intermediaGeometry: CellGeometry = {
-      ...finalGeometry,
-      positionAndMovement: {
-        ...finalGeometry.positionAndMovement,
-        movement: {
-          spin: {
-            around: (directionNumber * 2 + 6 - sign) % 12,
-            degrees: -120 * sign,
-          },
-          flip: undefined,
-        },
-      },
-    };
-
-    move.cell.setGeometry(intermediaGeometry, false);
-
-    setTimeout(() => {
-      move.cell.setGeometry(finalGeometry, true);
-    }, 50);
-  };
+  return moves;
 };
 
 const effects: readonly CellTransformationFunction[] = [
