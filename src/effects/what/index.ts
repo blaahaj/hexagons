@@ -1,22 +1,18 @@
 import faceColourEffects from "./faceColours";
-import faceContentEffects, {
-  transformIndependentRandomSymbols,
-} from "./faceContent";
+import faceContentEffects from "./faceContent";
 import cellMoveEffects from "./cellMove";
-import coinTumbleEffects, { transformIndependentRotateAll } from "./coinTumble";
+import coinTumbleEffects from "./coinTumble";
 import cellCompoundFunctions from "./compound";
-import { compound, type CellTransformationFunction } from "./core";
-import { suddenlyBees, suddenlyHarald } from "./special";
+import { type CellTransformationFunction } from "./core";
+import special from "./special";
 
 const effects: readonly CellTransformationFunction[] = [
-  // ...faceColourEffects,
-  // ...faceContentEffects,
-  // ...coinTumbleEffects,
-  // ...cellMoveEffects,
-  // ...cellCompoundFunctions,
-  // suddenlyBees,
-  suddenlyHarald,
-  compound(transformIndependentRandomSymbols, transformIndependentRotateAll),
+  ...faceColourEffects,
+  ...faceContentEffects,
+  ...coinTumbleEffects,
+  ...cellMoveEffects,
+  ...cellCompoundFunctions,
+  ...special,
 ];
 
 export default effects;

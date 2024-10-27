@@ -3,6 +3,9 @@ import { flipAll, transformSingleRotateAll } from "./coinTumble";
 import harald from "./harald";
 import type { RotateDegrees } from "../../core/coin";
 import { randomElementFrom } from "../../lib/randomThings";
+import { moveEverythingViaFlip } from "./cellMove";
+import type { Cell, Orientation } from "../../core/cell";
+import type { Face } from "../../core/face";
 
 const fillWithBees: CellTransformationFunction = () => cell => {
   cell.coin.hiddenFace.parts.top.setText("", false);
@@ -61,60 +64,22 @@ top: calc(-0.7  * var(--hex-short-radius));
 export const suddenlyHarald: CellTransformationFunction = cells => {
   const moves = new Map(
     cells.map(cell => {
-      const log: string[] = [];
-
       const cellOrientation = cell.geometry.instantOrientation;
 
-      const newCoinRotation: RotateDegrees = {
-        x: 180 - cell.coin.rotateDegrees.x,
-        y: cell.coin.rotateDegrees.y,
+      const chosenAxis = randomElementFrom(["x", "y"] as const);
+
+      const coinRotation: RotateDegrees = {
+        ...cell.coin.rotateDegrees,
+        [chosenAxis]: 180 - cell.coin.rotateDegrees[chosenAxis],
         z: randomElementFrom([0, 60, 120, 180, 240, 300]),
       };
-      log.push(JSON.stringify(newCoinRotation));
-
-      const hiddenFace = cell.coin.hiddenFace;
-      const rect = cell.screenPosition;
-      const isBackface = hiddenFace === cell.coin.backFace;
-
-      // Where does kl12 (position 0) on the face actually end up, on screen?
-      // relative to the hidden face:
-      let topDegrees = 0;
-      log.push(`topDegrees=${topDegrees}`);
-
-      // relative to the visible face: still zero.
-
-      // Relative to the cell:
-      // Apply coin tumble: Z, Y, X
-      topDegrees = (topDegrees + newCoinRotation.z) % 360;
-      log.push(`topDegrees=${topDegrees}`);
-
-      if (newCoinRotation.y % 360 !== 0) topDegrees = (360 - topDegrees) % 360;
-      log.push(`topDegrees=${topDegrees}`);
-
-      if (newCoinRotation.x % 360 !== 0) topDegrees = (180 - topDegrees) % 360;
-      log.push(`topDegrees=${topDegrees}`);
-
-      // Relative to the grid:
-      if (cellOrientation.reversed) topDegrees = (360 - topDegrees) % 360;
-      log.push(`topDegrees=${topDegrees}`);
-
-      topDegrees = (topDegrees + cellOrientation.zeroPosition * 30) % 360;
-      log.push(`topDegrees=${topDegrees}`);
-
-      const contentTransform: string[] = [];
-
-      contentTransform.push(`rotateZ(${-topDegrees}deg)`);
 
       return [
         cell,
         {
-          newCoinRotation,
-          hiddenFace,
-          rect,
-          topDegrees,
-          isBackface,
-          log,
-          contentTransform: contentTransform.join(" "),
+          cellOrientation,
+          coinRotation,
+          face: cell.coin.hiddenFace,
         },
       ];
     })
@@ -124,7 +89,62 @@ export const suddenlyHarald: CellTransformationFunction = cells => {
     const move = moves.get(cell);
     if (!move) return;
 
-    const div = `<div style="
+    // Prepare first, then rotate
+    prepareHarald(cell, move.cellOrientation, move.coinRotation, move.face);
+    cell.coin.setRotation(move.coinRotation, true);
+  };
+};
+
+export const suddenlyHarald2: CellTransformationFunction = cells => {
+  const flip = moveEverythingViaFlip(cells);
+
+  return cell => {
+    flip(cell);
+
+    // And now prepare the soon-to-be-visible face, just in time
+    const cellOrientation = cell.geometry.instantOrientation;
+    const coinRotation = cell.coin.rotateDegrees;
+    const face = cell.coin.visibleFace; // or at least, it will be soon
+
+    prepareHarald(cell, cellOrientation, coinRotation, face);
+  };
+};
+
+const prepareHarald = (
+  cell: Cell,
+  cellOrientation: Orientation,
+  coinRotation: RotateDegrees,
+  face: Face
+) => {
+  // Where does kl12 (position 0) on the face actually end up, on screen?
+  // relative to the hidden face:
+  let topDegrees = 0;
+
+  // relative to the visible face: kl12 on the front
+  // face is always in the same place as kl12 on the back face.
+  // So no transformation necessary.
+
+  // Relative to the cell:
+  // Apply coin tumble: Z, Y, X (in that order)
+  topDegrees = (topDegrees + coinRotation.z) % 360;
+  if (coinRotation.y % 360 !== 0) topDegrees = (360 - topDegrees) % 360;
+  if (coinRotation.x % 360 !== 0) topDegrees = (180 - topDegrees) % 360;
+
+  // Relative to the grid:
+  if (cellOrientation.reversed) topDegrees = (360 - topDegrees) % 360;
+
+  topDegrees = (topDegrees + cellOrientation.zeroPosition * 30) % 360;
+
+  const contentTransform: string[] = [];
+
+  contentTransform.push(`scale(15)`);
+  contentTransform.push(`translate(
+        calc(${cell.position.x} * -1.5 * var(--hex-long-radius) * var(--hexagon-spacing)),
+         calc(${cell.position.y + (Math.abs(cell.position.x) % 2) / 2} * -2 * var(--hex-short-radius) * var(--hexagon-spacing)  )
+         )`);
+  contentTransform.push(`rotateZ(${-topDegrees}deg)`);
+
+  const div = `<div style="
       position: absolute;
       display: block;
       width: calc(1 * var(--hex-short-radius));
@@ -132,17 +152,19 @@ export const suddenlyHarald: CellTransformationFunction = cells => {
       left: calc(var(--hex-long-radius) - 0.5 * var(--hex-short-radius));
       top: calc(-0.5 * var(--hex-short-radius));
       transform-origin: center center;
-      transform: ${move.contentTransform};
+      transform: ${contentTransform.reverse().join(" ")};
     ">${harald()}</div>`;
 
-    move.hiddenFace.parts.top.setText("oh haj!", false);
-    move.hiddenFace.parts.middle.setText(div, false);
-    move.hiddenFace.parts.bottom.setText("", false);
-    //   `bf=${move.isBackface} rx=${move.newCoinRotation.x} ry=${move.newCoinRotation.y} rz=${move.newCoinRotation.z} or=${cell.geometry.instantOrientation.reversed} zpos=${cell.geometry.instantOrientation.zeroPosition} top=${move.topDegrees} log=${move.log.join("\n")}`,
-    //   false
-    // );
+  face.setColor(randomWaterColor(), false);
 
-    move.hiddenFace.setColor(randomWaterColor(), false);
-    cell.coin.setRotation(move.newCoinRotation, true);
-  };
+  face.parts.top.setText("", false);
+  face.parts.middle.setText(div, false);
+  face.parts.bottom.setText("", false);
 };
+
+const effects: readonly CellTransformationFunction[] = [
+  cells =>
+    randomElementFrom([suddenlyBees, suddenlyHarald, suddenlyHarald2])(cells),
+];
+
+export default effects;
