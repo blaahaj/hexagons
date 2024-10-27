@@ -4,6 +4,8 @@ body {
   margin: 0;
   height: 100%;
   overflow: hidden;
+  transition-property: background-color;
+  transition-duration: 1s;
 }
 
 body.mirror {

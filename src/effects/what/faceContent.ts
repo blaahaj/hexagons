@@ -1,12 +1,13 @@
 import { CellTransformationFunction } from "./core";
 import { Cell } from "../../core/cell";
-import { randomElementFrom, randomSymbol } from "../../lib/randomThings";
+import { randomElementFrom } from "../../lib/randomThings";
 import { generateRange } from "../../lib/generateRange";
+import { randomAlphabet } from "../../lib/alphabets";
 
 type F = CellTransformationFunction;
 
 export const transformSingleRandomSymbol: F = () => {
-  const symbol = randomSymbol();
+  const symbol = randomAlphabet()();
   return (item: Cell) => {
     const texts = typeof symbol === "string" ? ["", symbol, ""] : symbol;
     item.coin.visibleFace.parts.top.setText(texts[0], true);
@@ -15,17 +16,22 @@ export const transformSingleRandomSymbol: F = () => {
   };
 };
 
-export const transformIndependentRandomSymbols: F = () => item => {
-  const symbol = randomSymbol();
-  const texts = typeof symbol === "string" ? ["", symbol, ""] : symbol;
-  item.coin.visibleFace.parts.top.setText(texts[0], true);
-  item.coin.visibleFace.parts.middle.setText(texts[1], true);
-  item.coin.visibleFace.parts.bottom.setText(texts[2], true);
+export const transformIndependentRandomSymbols: F = () => {
+  const symbolGenerator = randomAlphabet();
+
+  return item => {
+    const symbol = symbolGenerator();
+    const texts = typeof symbol === "string" ? ["", symbol, ""] : symbol;
+    item.coin.visibleFace.parts.top.setText(texts[0], true);
+    item.coin.visibleFace.parts.middle.setText(texts[1], true);
+    item.coin.visibleFace.parts.bottom.setText(texts[2], true);
+  };
 };
 
 export const transformNRandomSymbols: F = () => {
+  const symbolGenerator = randomAlphabet();
   const symbols = [...generateRange(Math.random() * 6)].map(() =>
-    randomSymbol()
+    symbolGenerator()
   );
   return (item: Cell) => {
     const symbol = randomElementFrom(symbols);
