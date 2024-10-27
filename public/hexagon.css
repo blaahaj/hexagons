@@ -12,7 +12,7 @@ body.mirror {
 
 #hexagon-container {
   --hexagon-spacing: 1.06;
-  --hex-short-radius: 3.3em;
+  --hex-short-radius: 6vmin;
   --hex-long-radius: calc(var(--hex-short-radius) / sin(60deg));
   --duration: 5s;
   position: absolute;
@@ -29,8 +29,16 @@ body.mirror {
 
   left: calc(var(--hex-long-radius) * var(--margin-radii));
   top: calc(var(--hex-short-radius) * var(--margin-radii));
-  bottom: calc(var(--hex-short-radius) * (var(--margin-radii) + 1));
-  right: calc(var(--hex-long-radius) * (var(--margin-radii) + 2));
+  bottom: calc(var(--hex-short-radius) * (var(--margin-radii)));
+  right: calc(var(--hex-long-radius) * (var(--margin-radii)));
+
+  transition: rotate;
+  transition-duration: 2s;
+  transform-style: preserve-3d;
+}
+
+body.mirror #hexagon-container {
+  rotate: y 180deg;
 }
 
 /**************************************/

@@ -8,7 +8,7 @@ import {
 
 export class Grid {
   private readonly index: Record<string, Cell[] | undefined> = {};
-  private _boundary: Position | undefined;
+  private _boundary: [Position, Position] | undefined;
 
   public static from(cells: Iterable<Cell>): Grid {
     const array = new Grid();
@@ -18,11 +18,11 @@ export class Grid {
     return array;
   }
 
-  public set boundary(pos: Position) {
+  public set boundary(pos: [Position, Position]) {
     this._boundary ||= pos;
   }
 
-  public get boundary(): Position | undefined {
+  public get boundary(): [Position, Position] | undefined {
     return this._boundary;
   }
 

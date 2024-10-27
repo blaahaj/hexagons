@@ -20,7 +20,7 @@ export class Position {
   public toEuclidean(): EuclideanPosition {
     return EuclideanPosition.at(
       this.x * longRadius * 1.5,
-      2 * this.y + (this.x % 2)
+      2 * this.y + (Math.abs(this.x) % 2)
     );
   }
 }
