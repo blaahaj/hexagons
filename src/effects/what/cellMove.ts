@@ -230,14 +230,19 @@ const prepareMoves = (
   direction: NeighbourDirections
 ): Move[] => {
   const moves: Move[] = [];
-  const boundary = cells[0].grid.boundary;
+  const boundary = cells[0].grid.boundary!;
   const homeless: Cell[] = [];
   const unfilled = cells.map(cell => cell.position);
 
   for (const cell of cells) {
     const to = neighboursOfPosition(cell.position)[direction];
 
-    if (to.x >= 0 && to.y >= 0 && to.x <= boundary!.x && to.y <= boundary!.y) {
+    if (
+      to.x >= boundary[0].x &&
+      to.y >= boundary[0].y &&
+      to.x <= boundary[1].x &&
+      to.y <= boundary[1].y
+    ) {
       moves.push({ cell, newPosition: to, visible: true });
       const idx = unfilled.findIndex(pos => pos.toKey() === to.toKey());
       if (idx >= 0) unfilled.splice(idx, 1);

@@ -13,7 +13,10 @@ export class Coin {
   private readonly element: HTMLDivElement;
   private _rotateDegrees: RotateDegrees = { x: 0, y: 0, z: 0 };
 
-  constructor(appendTo: HTMLElement) {
+  constructor(
+    appendTo: HTMLElement,
+    private readonly isParentReversed: () => boolean
+  ) {
     const element = document.createElement("div");
     element.setAttribute("class", "coin");
     this.element = element;
@@ -50,14 +53,17 @@ export class Coin {
   }
 
   public get visibleFace(): Face {
-    return (this.rotateDegrees.x + this.rotateDegrees.y) % 360 === 0
-      ? this.frontFace
-      : this.backFace;
+    return this.isReversed() ? this.backFace : this.frontFace;
   }
 
   public get hiddenFace(): Face {
-    return (this.rotateDegrees.x + this.rotateDegrees.y) % 360 === 180
-      ? this.frontFace
-      : this.backFace;
+    return this.isReversed() ? this.frontFace : this.backFace;
+  }
+
+  private isReversed(): boolean {
+    return (
+      ((this.rotateDegrees.x + this.rotateDegrees.y) % 360 === 180) !=
+      this.isParentReversed()
+    );
   }
 }

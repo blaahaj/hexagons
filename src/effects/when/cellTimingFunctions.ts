@@ -57,13 +57,8 @@ export const timingWipeCentreLine: CellTimingFunction = () => {
   };
 };
 
-export const timingSpiral: CellTimingFunction = cells => {
-  const grid = cells[0].grid;
-  const boundary = grid.boundary;
-  const center = Position.at(
-    Math.floor(boundary!.x / 2),
-    Math.floor(boundary!.y / 2)
-  );
+export const timingSpiral: CellTimingFunction = () => {
+  const center = Position.at(0, 0);
   const euclideanCenter = center.toEuclidean();
 
   // Imperfect. Not sure why.

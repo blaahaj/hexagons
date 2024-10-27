@@ -14,8 +14,13 @@ const initGrid = (container: HTMLElement): Grid => {
   let cellX = 0;
   let cellY = 0;
 
-  for (;;) {
-    const { cell, element } = Cell.create(Position.at(cellX, cellY), grid);
+  const addCellIfEmpty = (
+    pos: Position
+  ): { cell: Cell; element: HTMLElement } | undefined => {
+    if (grid.cellAt(pos)) return;
+
+    const { cell, element } = Cell.create(pos, grid);
+
     const coin = cell.coin;
 
     for (const whichFace of ["frontFace", "backFace"] as const) {
@@ -30,6 +35,18 @@ const initGrid = (container: HTMLElement): Grid => {
     }
 
     container.appendChild(element);
+
+    return { cell, element };
+  };
+
+  for (;;) {
+    const result = addCellIfEmpty(Position.at(cellX, cellY));
+    if (!result) break;
+
+    const { element } = result;
+    addCellIfEmpty(Position.at(-cellX, cellY));
+    addCellIfEmpty(Position.at(-cellX, -cellY));
+    addCellIfEmpty(Position.at(cellX, -cellY));
 
     if (
       element.offsetLeft + element.offsetWidth >
@@ -50,7 +67,7 @@ const initGrid = (container: HTMLElement): Grid => {
     if (container.childElementCount > 1000) break;
   }
 
-  grid.boundary = Position.at(cellX, cellY);
+  grid.boundary = [Position.at(-cellX, -cellY), Position.at(cellX, cellY)];
 
   Object.defineProperty(window, "__grid", {
     value: grid,

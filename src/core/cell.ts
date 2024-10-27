@@ -58,8 +58,6 @@ export class Cell {
 
     this.positionAndMovementElement.appendChild(this.instantOrientationElement);
 
-    this.coin = new Coin(this.instantOrientationElement);
-
     this._geometry = {
       positionAndMovement: {
         position,
@@ -73,6 +71,11 @@ export class Cell {
     grid.add(this);
 
     this.setGeometry(this._geometry, false);
+
+    this.coin = new Coin(
+      this.instantOrientationElement,
+      () => this._geometry.instantOrientation.reversed
+    );
   }
 
   get position(): Position {
@@ -112,8 +115,8 @@ export class Cell {
 
     if (isMove) this.grid.remove(this);
 
-    style.left = `calc(var(--hexagon-spacing) * var(--hex-long-radius) * ${to.x} * 1.5)`;
-    style.top = `calc(var(--hexagon-spacing) * var(--hex-short-radius) * ${2 * to.y + (to.x % 2)})`;
+    style.left = `calc(50% - var(--hex-long-radius) + ${to.x} * 1.5 * var(--hex-long-radius) * var(--hexagon-spacing))`;
+    style.top = `calc(50% - var(--hex-short-radius) + ${to.y + (Math.abs(to.x) % 2) / 2} * 2 * var(--hex-short-radius) * var(--hexagon-spacing))`;
 
     if (isMove) this.grid.add(this);
   }
