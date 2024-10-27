@@ -20,11 +20,11 @@ export type Neighbours<T> = Exclude<
 
 export const neighboursOfPosition = (pos: Position): Neighbours<Position> => ({
   kl00: Position.at(pos.x + 0, pos.y - 1),
-  kl02: Position.at(pos.x + 1, pos.y - 1 + (pos.x % 2)),
-  kl04: Position.at(pos.x + 1, pos.y + 0 + (pos.x % 2)),
+  kl02: Position.at(pos.x + 1, pos.y - 1 + (Math.abs(pos.x) % 2)),
+  kl04: Position.at(pos.x + 1, pos.y + 0 + (Math.abs(pos.x) % 2)),
   kl06: Position.at(pos.x + 0, pos.y + 1),
-  kl08: Position.at(pos.x - 1, pos.y + 0 + (pos.x % 2)),
-  kl10: Position.at(pos.x - 1, pos.y - 1 + (pos.x % 2)),
+  kl08: Position.at(pos.x - 1, pos.y + 0 + (Math.abs(pos.x) % 2)),
+  kl10: Position.at(pos.x - 1, pos.y - 1 + (Math.abs(pos.x) % 2)),
 });
 
 export const mapNeighbours = <I, O>(
