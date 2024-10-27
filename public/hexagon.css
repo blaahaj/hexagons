@@ -31,6 +31,14 @@ body.mirror {
   top: calc(var(--hex-short-radius) * var(--margin-radii));
   bottom: calc(var(--hex-short-radius) * (var(--margin-radii)));
   right: calc(var(--hex-long-radius) * (var(--margin-radii)));
+
+  transition: rotate;
+  transition-duration: 2s;
+  transform-style: preserve-3d;
+}
+
+body.mirror #hexagon-container {
+  rotate: y 180deg;
 }
 
 /**************************************/
